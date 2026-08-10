@@ -44,16 +44,16 @@ const COMMON_NAMES = new Map(Object.entries({
   '20B8': '坦格符号', '20B9': '印度卢比符号', '20BA': '土耳其里拉符号', '20BB': '马纳特符号',
   '20BC': '马纳特符号', '20BD': '俄罗斯卢布符号', '20BF': '比特币符号',
   // Letterlike Symbols
-  '2102': '双线 C（复数）', '2103': '摄氏度', '2105': '每（care of）', '2106': '每（库拉）',
+  '2102': '双线 C（复数）', '2103': '摄氏度', '2105': '代收', '2106': '每（库拉）',
   '2109': '华氏度', '210A': '花体 g', '210B': '花体 H', '210C': '黑花体 H', '210D': '双线 H',
   '210E': '普朗克常数', '210F': '约化普朗克常数', '2110': '花体 I', '2111': '花体 I（虚数）',
-  '2112': '自然对数（花体 L）', '2113': '花体 l', '2115': '双线 N（自然数）', '2116': '.numero 号',
+  '2112': '自然对数（花体 L）', '2113': '花体 l', '2115': '双线 N（自然数）', '2116': '号码',
   '2117': '录音版权符号', '2118': '威伊尔（Weierstrass）幂集 P', '2119': '双线 P',
   '211A': '双线 Q（有理数）', '211B': '花体 R', '211C': '花体 R（实数）', '211D': '双线 R（实数）',
   '2120': '服务商标', '2121': '电报电话', '2122': '商标符号', '2124': '双线 Z（整数）',
   '2126': '欧米伽（欧姆）', '212A': '开尔文（温度）', '212B': '埃斯特朗（长度）', '212C': '花体 B',
   '212D': '黑花体 C', '212F': '花体 e', '2130': '花体 E', '2131': '花体 F', '2132': '反 F',
-  '2133': '花体 M', '2134': '花体 o', '2135': '阿列夫（Aleph）', '2136': '贝特（Beth）',
+  '2133': '花体 M', '2134': '花体 o', '2135': '阿列夫', '2136': '贝特',
   '2137': '吉梅尔（Gimel）', '2138': '达莱特（Dalet）', '2139': '信息源', '213C': '双线 π',
   '213D': '双线 γ', '213E': '双线 Γ', '213F': '双线 Π', '2140': '双线和号（求和）',
   '2141': '花体 S', '2142': '反 E', '2143': '反 ε', '2144': '倒置 ε',
@@ -79,7 +79,7 @@ const COMMON_NAMES = new Map(Object.entries({
   '21E6': '向左白色箭头', '21E7': '向上白色箭头', '21E8': '向右白色箭头', '21E9': '向下白色箭头',
   '21EA': '向上白色双线箭头', '21F5': '向下向上箭头（互换）',
   // Mathematical Operators (common)
-  '2201': '补集', '2202': '偏微分', '2204': '不存在', '2206': '增量（差分）', '2207': 'nabla（梯度）',
+  '2201': '补集', '2202': '偏微分', '2204': '不存在', '2206': '增量（差分）', '2207': '纳布拉（梯度）',
   '2209': '不属于', '220A': '小属于', '220C': '不包含', '220D': '小包含', '220E': '证毕',
   '220F': '连乘积', '2210': '余积', '2212': '减号', '2213': '减加号', '2214': '点加号',
   '2215': '除法斜杠', '2216': '集合减', '2217': '星号运算符', '2218': '环运算符', '2219': '点积运算符',
@@ -109,7 +109,7 @@ const COMMON_NAMES = new Map(Object.entries({
   '22C5': '点运算符', '22C6': '星运算符', '22EE': '竖三点（数学）', '22EF': '中三点（数学）',
   '22F0': '右上三点（数学）', '22F1': '右下三点（数学）',
   // Miscellaneous Technical (keyboard keys)
-  '2318': 'Command 键', '2325': 'Option 键', '2303': 'Control 键', '21E7': '向上白色箭头',
+  '2318': '命令键', '2325': '选项键', '2303': '控制键', '21E7': '向上白色箭头',
   '2326': '向前删除键', '232B': '退格键', '2423': '开方括号（空格）', '21B5': '回车符号',
   '2387': '替代键', '238B': '中断键', '2386': '回车键（备用）',
   // Geometric Shapes
@@ -137,8 +137,8 @@ const COMMON_NAMES = new Map(Object.entries({
   '2612': '带叉方框', '2613': '圣安德鲁十字', '2614': '雨伞（带雨滴）', '2615': '热饮', '2616': '白色将军（将棋）',
   '2617': '黑色将军（将棋）', '2618': '三叶草', '2619': '反向花体 P', '261A': '黑色左指', '261B': '黑色右指',
   '261C': '白色左指', '261D': '白色上指', '261E': '白色右指', '261F': '白色下指', '2620': '骷髅与交叉骨',
-  '2621': '警告（ caution）', '2622': '放射性符号', '2623': '生物危害符号', '2624': '医疗符号（手杖）',
-  '2625': '安克（生命之钥）', '2626': '东正教十字', '2627': 'Chi Rho 符号', '2628': '十字与光环',
+  '2621': '警告符号', '2622': '放射性符号', '2623': '生物危害符号', '2624': '医疗符号（手杖）',
+  '2625': '安克（生命之钥）', '2626': '东正教十字', '2627': '凯-罗符号', '2628': '十字与光环',
   '2629': '耶路撒冷十字', '262A': '星月（伊斯兰）', '262B': '法西斯（束棒）', '262C': '太极图',
   '262D': '锤子与镰刀', '262E': '和平符号', '262F': '阴阳太极', '2630': '易经卦（天）',
   '2631': '易经卦（泽）', '2632': '易经卦（火）', '2633': '易经卦（雷）', '2634': '易经卦（风）',
@@ -162,7 +162,7 @@ const COMMON_NAMES = new Map(Object.entries({
   '268E': '双选（方）', '268F': '三选（方）', '2690': '旗杆（空心）', '2691': '旗杆（实心）',
   '2692': '原子（镰锤）', '2693': '锚', '2694': '交叉剑', '2695': '医疗符号（蛇杖）',
   '2696': '天平（⚖）', '2697': '黄道（炼金）', '2698': '花朵（莲花）', '2699': '齿轮', '269A': '酵母（炼金）',
-  '269B': '原子符号', '269C': 'Fleur-de-lis（百合花饰）', '269D': '带光环白星', '269E': '前推流',
+  '269B': '原子符号', '269C': '百合花饰', '269D': '带光环白星', '269E': '前推流',
   '269F': '后推流', '26A0': '危险符号', '26A1': '高压（闪电）符号', '26A2': '同性恋符号（双男）',
   '26A3': '同性恋符号（双女）', '26A4': '异性恋符号', '26A5': '跨性别符号', '26A6': '男性加女性符号',
   '26A7': '男性加斜线（跨性别）', '26A8': '男性加女性（合）', '26A9': '三性符号', '26AA': '中白圆',
@@ -233,8 +233,8 @@ const COMMON_NAMES = new Map(Object.entries({
   '2B22': '黑六边形', '2B23': '横向黑六边形', '2B29': '黑小菱形', '2B2C': '白小菱形',
   '2B2D': '横向白椭圆', '2B2E': '横向黑椭圆', '2B2F': '纵向白椭圆', '2B30': '纵向黑椭圆',
   '2B50': '白色中号星', '2B51': '白色中星（旋转）', '2B52': '白色星轮廓', '2B53': '黑右箭头（重型）',
-  '2B54': '白右箭头（重型）', '2B55': '粗大圆圈', '2B56': '带圈oval', '2B57': '带圈上斜oval',
-  '2B58': '重圆', '2B59': '重带圈oval',
+  '2B54': '白右箭头（重型）', '2B55': '粗大圆圈', '2B56': '带圈椭圆', '2B57': '带圈上斜椭圆',
+  '2B58': '重圆', '2B59': '重带圈椭圆',
   // Misc Symbols / pictographs (commonly used)
   '2764': '粗黑心',
   // Enclosed Alphanumerics
@@ -269,6 +269,7 @@ const COMPOUND_TOKENS = new Map(Object.entries({
   'WHITE ARROW': '白色箭头', 'DOUBLE LINE': '双线', 'GREEK CROSS': '希腊十字', 'LATIN CROSS': '拉丁十字',
   'MALTESE CROSS': '马耳他十字', 'STAR OF DAVID': '大卫之星', 'YIN YANG': '阴阳太极',
   'WHEEL OF DHARMA': '法轮', 'PEACE SIGN': '和平符号', 'YIN YANG SYMBOL': '阴阳符号',
+  'MILKY WAY': '银河', 'PILE OF POO': '便便堆', 'SLEUTH OR SPY': '侦探或间谍', 'GOAL NET': '球门网',
   'DOUBLE STRUCK': '双线', 'NABLA': 'nabla（梯度算子）', 'ALEF': '阿列夫',
   'RIGHTWARDS': '向右', 'LEFTWARDS': '向左', 'UPWARDS': '向上', 'DOWNWARDS': '向下',
   'RIGHT POINTING': '右指', 'LEFT POINTING': '左指', 'UP POINTING': '上指', 'DOWN POINTING': '下指',
@@ -498,6 +499,219 @@ const TOKEN_NAMES = new Map(Object.entries({
   ORANGE: '橙', PURPLE: '紫', PINK: '粉',
 }));
 
+// Unicode 17 adds many names from less common scripts, technical notations, and
+// newer pictographs. Keep these additions separate from the hand-curated core
+// table so the fallback translator remains easy to extend.
+const EXTENDED_TOKEN_NAMES = new Map(Object.entries({
+  // Scripts and writing systems
+  ARMENIAN: '亚美尼亚文', HEBREW: '希伯来文', ARABIC: '阿拉伯文', SYRIAC: '叙利亚文',
+  NKO: '恩科文', SAMARITAN: '撒玛利亚文', MANDAIC: '曼达安文', DEVANAGARI: '天城文',
+  BENGALI: '孟加拉文', GURMUKHI: '古木基文', GUJARATI: '古吉拉特文', ORIYA: '奥里亚文',
+  TELUGU: '泰卢固文', KANNADA: '卡纳达文', MALAYALAM: '马拉雅拉姆文', SINHALA: '僧伽罗文',
+  THAI: '泰文', MYANMAR: '缅甸文', GEORGIAN: '格鲁吉亚文', ETHIOPIC: '埃塞俄比亚文',
+  CANADIAN: '加拿大音节文字', OGHAM: '欧甘文', RUNIC: '如尼文', PHILIPPINE: '菲律宾文',
+  KHMER: '高棉文', MONGOLIAN: '蒙古文', JAVANESE: '爪哇文', SUNDANESE: '巽他文',
+  BATAK: '巴塔克文', LEPCHA: '雷布查文', OL: '奥尔奇基文', CHIKI: '奥尔奇基文',
+  VEDIC: '吠陀文', TIFINAGH: '提非纳文', COPTIC: '科普特文', PAHAWH: '帕哈霍文',
+  HMONG: '苗文', NEWA: '尼瓦尔文', SHARADA: '舍拉达文', KHAROSHTHI: '佉卢文',
+  SIDDHAM: '悉昙文', KAWI: '卡威文', TULU: '图鲁文', TIGALARI: '提加拉里文',
+  SOYOMBO: '索永布文', ZANABAZAR: '札那巴札尔文', MANICHAEAN: '摩尼文', BAMUM: '巴姆穆文',
+  JAPANESE: '日文', KOREAN: '韩文', CHINESE: '中文', CARIAN: '卡里亚文', CYPRO: '塞浦路斯文',
+  MINOAN: '米诺斯文',
+
+  // Diacritics, punctuation, and mathematical terminology
+  CENTRED: '居中', CENTERED: '居中', RHOTIC: '卷舌', EXTRA: '特', YIN: '阴', YANG: '阳',
+  DEPARTING: '离调', UNASPIRATED: '不送气', SHELF: '架', EMPHASIS: '强调', DRAM: '德拉姆',
+  AFGHANI: '阿富汗尼', CONTRACTION: '缩写', HARKLEAN: '哈克利安', OBELUS: '除号',
+  METOBELUS: '复合除号', ASTERISCUS: '星号', OO: '双 O', DENNEN: '登嫩', GBAKURUNEN: '巴库伦嫩',
+  DOROME: '多罗梅', TAMAN: '塔曼', NEQUDAA: '内库达', AFSAAQ: '阿夫萨克', ANGED: '安盖德',
+  ATMAAU: '阿特毛', SHIYYAALAA: '希亚拉', QITSA: '奇察', ZIQAA: '齐卡', ZAEF: '扎埃夫',
+  TURU: '图鲁', ARKAANU: '阿尔卡努', MASHFAAT: '马什法特', ANNAAU: '安瑙', ISSHAR: '伊什哈尔',
+  GANDA: '甘达', PARA: '段落', FONGMAN: '丰曼', ANGKHANKHU: '安康库', KHOMUT: '科穆特',
+  BIRGA: '比尔加', SIBE: '锡伯', SYLLABLE: '音节', BOUNDARY: '边界', BINDU: '点', PADA: '音步',
+  ROMAN: '罗马', TONAL: '声调', WORDSPACE: '词间空格', WORD: '词', FEATHER: '羽毛', PALLAWA: '帕拉瓦',
+  PUNCTUS: '标点', ELEVATUS: '升高', VERSE: '诗行', DIVIDER: '分隔符', SEPARATOR: '分隔符', CARET: '脱字符',
+  UNDERTIE: '下连线', TRICOLON: '三冒号', MILL: '密尔', AUSTRAL: '澳大利亚', LIVRE: '里弗尔', TOURNOIS: '图尔努瓦',
+  SPESMILO: '斯佩斯米洛', SOM: '索姆', SAUDI: '沙特', RIYAL: '里亚尔', ACCOUNT: '账目', ADDRESSED: '指向',
+  SUBJECT: '主题', SCRUPLE: '斯克鲁普尔', PRESCRIPTION: '处方', TAKE: '取用', RESPONSE: '响应', VERSICLE: '短诗节',
+  OUNCE: '盎司', ESTIMATED: '估计', FACSIMILE: '传真', PER: '每', AKTIESELSKAB: '股份公司', SOURCE: '来源',
+  PEDESTAL: '基座', WALL: '墙', EXCESS: '超出', EQUIVALENT: '等价', GEOMETRICALLY: '几何地', DIFFERENCE: '差异',
+  CORRESPONDS: '对应', ESTIMATES: '估计', EQUIANGULAR: '等角', MEASURED: '测量', STRICTLY: '严格', PRECEDES: '先于',
+  SUCCEEDS: '后于', RELATION: '关系', ORIGINAL: '原像', IMAGE: '图像', MULTIMAP: '多重映射', INTERCALATE: '交错',
+  BOWTIE: '蝴蝶结', CONTAINS: '包含', OVERBAR: '上横线', BAG: '集合袋', MEMBERSHIP: '隶属', DIAMETER: '直径',
+  PROJECTIVE: '射影', PERSPECTIVE: '透视', SECTOR: '扇区', POSITION: '位置', INDICATOR: '指示器', HOURGLASS: '沙漏',
+  FROWN: '皱眉', SMILE: '微笑', KEYBOARD: '键盘', CYLINDRICITY: '圆柱度', PROFILE: '轮廓', SYMMETRY: '对称',
+  TOTAL: '总', RUNOUT: '跳动', DIMENSION: '尺寸', ORIGIN: '原点', CONICAL: '圆锥', TAPER: '锥度', SLOPE: '斜率',
+  COUNTERBORE: '沉孔', COUNTERSINK: '沉头孔', INSERTION: '插入', CONTINUOUS: '连续', UNDERLINE: '下划线',
+  DISCONTINUOUS: '间断', COMPOSITION: '组合', HELM: '舵轮', UNDO: '撤销', MONOSTABLE: '单稳态', HYSTERESIS: '磁滞',
+  CLEAR: '清除', SCREEN: '屏幕', METRICAL: '韵律', TRISEME: '三拍', TETRASEME: '四拍', PENTASEME: '五拍',
+  FUSE: '保险丝', STRAIGHTNESS: '直线度', FLATNESS: '平面度', AC: '交流', CURRENT: '电流', DECIMAL: '十进制',
+  EXPONENT: '指数', STOPWATCH: '秒表', FLOWING: '流动', SAND: '沙', NULL: '空值', ENQUIRY: '询问',
+  ACKNOWLEDGE: '确认', SYNCHRONOUS: '同步', IDLE: '空闲', CANCEL: '取消', SUBSTITUTE: '替代', FILE: '文件', GROUP: '组',
+  SPACE: '空格', BLANK: '空白', NEWLINE: '换行', OCR: '光学字符识别', CHAIR: '椅子', BELT: '腰带', BUCKLE: '扣',
+  OPPOSITION: '对冲', RECYCLING: '回收', GENERIC: '通用', MATERIALS: '材料',
+
+  // Shapes, symbols, transport, and pictographs
+  WALLPLANE: '墙面', FLOORPLANE: '地面', APL: 'APL 语言', INSTRUMENTAL: '器乐', VOCAL: '声乐', VERY: '很',
+  SHELL: '贝壳', SPOKED: '辐条', CURLY: '卷曲', ARC: '弧', UNDERBAR: '下横线', NOTEHEAD: '音符头', MATHEMATICAL: '数学',
+  EQUILATERAL: '等边', SANS: '无衬线', SERIF: '衬线', FILL: '填充', ANTICLOCKWISE: '逆时针', CLOCKWISE: '顺时针',
+  REVERSE: '反向', RAYS: '光线', SNAKE: '蛇', ANNOTATION: '注释', HALFWIDTH: '半角', AEGEAN: '爱琴', ALIEN: '外星人',
+  OCLOCK: '点钟', JUSTIFIED: '对齐', ZIGZAG: '之字形', CONTAINING: '包含', SALTIRE: '圣安德鲁十字', CROSSING: '交叉',
+  SALT: '盐', FISH: '鱼', FLYING: '飞行', SAUCER: '飞碟', CHERRY: '樱桃', STRAWBERRY: '草莓', BAMBOOS: '竹子',
+  EMOJI: '表情符号', BUBBLE: '气泡', ROBOT: '机器人', RACING: '赛车', LARGEST: '最大', CHARACTERS: '字符', PAIRED: '成对',
+  SUBGROUP: '子组', STAFF: '五线谱', GATE: '门', DRAGON: '龙', LENTICULAR: '透镜形', NAME: '名称', SALAAM: '问候',
+  SUBUNIT: '子单位', TRAVEL: '旅行', ADULT: '成年人', CHILD: '儿童', OLDER: '年长者', BEARDED: '留胡子', HEADSCARF: '头巾',
+  STEAMY: '蒸汽', ROOM: '房间', CLIMBING: '攀爬', MAGE: '法师', FAIRY: '仙女', VAMPIRE: '吸血鬼', MERPERSON: '人鱼',
+  GENIE: '精灵', ZOMBIE: '僵尸', BRAIN: '大脑', BILLED: '带喙', CAP: '帽子', SCARF: '围巾', GLOVES: '手套', COAT: '外套',
+  SOCKS: '袜子', GIFT: '礼物', FIRECRACKER: '爆竹', JIGSAW: '拼图', PUZZLE: '谜题', PIECE: '拼片', TEST: '试管', TUBE: '管',
+  PETRI: '培养皿', DISH: '皿', DNA: 'DNA', HELIX: '螺旋', ABACUS: '算盘', EXTINGUISHER: '灭火器', TOOLBOX: '工具箱',
+  BRICK: '砖块', LUGGAGE: '行李', LOTION: '乳液', SPOOL: '线轴', THREAD: '线', YARN: '毛线', TEDDY: '泰迪熊', BROOM: '扫帚',
+  BASKET: '篮子', ROLL: '卷', SOAP: '肥皂', SPONGE: '海绵', RECEIPT: '收据', NAZAR: '纳扎尔', AMULET: '护身符',
+  EQUIHOPPER: '等跃马', FERZ: '斐尔兹', ALFIL: '象', XIANGQI: '象棋', GENERAL: '将军', MANDARIN: '仕', ELEPHANT: '象',
+  HORSE: '马', CHARIOT: '车', CANNON: '炮', SOLDIER: '卒', BALLET: '芭蕾', SHOES: '鞋', SWIMSUIT: '泳衣', BRIEFS: '三角裤',
+  THONG: '人字拖', SANDAL: '凉鞋', GREY: '灰', GRAY: '灰', BLOOD: '血', ADHESIVE: '创可贴', BANDAGE: '绷带', STETHOSCOPE: '听诊器',
+  RAY: '射线', CRUTCH: '拐杖', YO: '悠悠球', KITE: '风筝', PARACHUTE: '降落伞', BOOMERANG: '回旋镖', WAND: '魔杖',
+  PINATA: '皮纳塔', NESTING: '套娃', DOLLS: '娃娃', MARACAS: '沙锤', FLUTE: '长笛', HARP: '竖琴', TROMBONE: '长号', TREASURE: '宝箱',
+  SHOVEL: '铲子', RINGED: '带环', PLANET: '行星', RAZOR: '剃刀', DIYA: '油灯', BANJO: '班卓琴', MILITARY: '军用', HELMET: '头盔',
+  ACCORDION: '手风琴', DRUM: '鼓', COIN: '硬币', CARPENTRY: '木工', SAW: '锯', SCREWDRIVER: '螺丝刀', LADDER: '梯子', MIRROR: '镜子',
+  PLUNGER: '皮搋子', SEWING: '缝纫', NEEDLE: '针', BUCKET: '桶', MOUSE: '鼠标', TRAP: '捕捉器', TOOTHBRUSH: '牙刷', HEADSTONE: '墓碑',
+  PLACARD: '牌子', ROCK: '岩石', IDENTIFICATION: '身份', BATTERY: '电池', HAMSA: '法蒂玛之手', FOLDING: '折叠', FAN: '扇子', HAIR: '头发',
+  KHANDA: '坎达', WORM: '蠕虫', BEETLE: '甲虫', COCKROACH: '蟑螂', POTTED: '盆栽', PLANT: '植物', WOOD: '木材', LOTUS: '莲花',
+  LEAFLESS: '无叶', GOOSE: '鹅', LUNGS: '肺', HUGGING: '拥抱', PREGNANT: '孕育', FINGERPRINT: '指纹', HAIRY: '多毛', CREATURE: '生物',
+  ORCA: '虎鲸', MOOSE: '驼鹿', DONKEY: '驴', BLUEBERRIES: '蓝莓', PEPPER: '辣椒', OLIVE: '橄榄', FLATBREAD: '扁面包', TAMALE: '玉米粽',
+  FONDUE: '奶酪火锅', TEAPOT: '茶壶', POURING: '倾倒', LIQUID: '液体', BEANS: '豆子', GINGER: '姜', POD: '豆荚', ROOT: '根', VEGETABLE: '蔬菜',
+  SPLATTER: '飞溅', MELTING: '融化', SALUTING: '敬礼', PEEKING: '窥视', BITING: '咬', LIP: '嘴唇', BUBBLES: '气泡', SHAKING: '摇晃',
+  BAGS: '袋子', DISTORTED: '变形', FIGHT: '争斗', VIEWER: '观看者', PUSHING: '推',
+
+  // Astronomy and less common symbols
+  CERES: '谷神星', PALLAS: '智神星', JUNO: '婚神星', VESTA: '灶神星', CHIRON: '凯龙星', OPHIUCHUS: '蛇夫座',
+  SEXTILE: '六分相', SEMISEXTILE: '半六分相', QUINCUNX: '梅花相', SESQUIQUADRATE: '倍半刑', BASEBALL: '棒球',
+  LANES: '车道', SHINTO: '神道', SHRINE: '神社', HISTORIC: '历史', SITE: '地点', SKIER: '滑雪者', SKATE: '冰鞋', FERRY: '渡船',
+  SLIDING: '滑行', CHAINS: '链条', FOLDER: '文件夹', NOTEBOOK: '笔记本', RADIO: '收音机', ELECTRIC: '电', PRINTER: '打印机',
+  TEXT: '文本', PICTURE: '图片', FONT: '字体', CALENDAR: '日历', HOTEL: '酒店', STORE: '商店', WHALE: '鲸鱼', CAMEL: '骆驼',
+  SHOE: '鞋', KISS: '亲吻', STONE: '石头', SLEEPING: '睡眠',
+}));
+
+for (const [token, translation] of EXTENDED_TOKEN_NAMES) TOKEN_NAMES.set(token, translation);
+
+const EMOJI_TOKEN_NAMES = new Map(Object.entries({
+  // Nature, food, and celebrations
+  CYCLONE: '气旋', FOGGY: '雾', RAINBOW: '彩虹', VOLCANO: '火山', GLOBE: '地球仪', MERIDIANS: '经线', THERMOMETER: '温度计',
+  TACO: '塔可', BURRITO: '墨西哥卷饼', CHESTNUT: '栗子', SEEDLING: '树苗', CACTUS: '仙人掌', TULIP: '郁金香', ROSE: '玫瑰',
+  HIBISCUS: '木槿', SUNFLOWER: '向日葵', BLOSSOM: '花朵', HERB: '香草', MUSHROOM: '蘑菇', TOMATO: '番茄', AUBERGINE: '茄子',
+  GRAPES: '葡萄', MELON: '甜瓜', WATERMELON: '西瓜', TANGERINE: '橘子', LEMON: '柠檬', BANANA: '香蕉', PINEAPPLE: '菠萝',
+  PEAR: '梨', PEACH: '桃子', CHERRIES: '樱桃', HAMBURGER: '汉堡', SLICE: '片', PIZZA: '披萨', MEAT: '肉', BONE: '骨头',
+  RICE: '米饭', CRACKER: '脆饼', COOKED: '熟', CURRY: '咖喱', STEAMING: '蒸', BOWL: '碗', SPAGHETTI: '意大利面', BREAD: '面包',
+  FRENCH: '法式', FRIES: '薯条', ROASTED: '烤', SWEET: '甜', POTATO: '土豆', DANGO: '团子', ODEN: '关东煮', SUSHI: '寿司',
+  FRIED: '炸', SHRIMP: '虾', SOFT: '软', ICE: '冰', CREAM: '冰淇淋', DOUGHNUT: '甜甜圈', COOKIE: '曲奇', CANDY: '糖果',
+  LOLLIPOP: '棒棒糖', CUSTARD: '蛋奶冻', SHORTCAKE: '奶油蛋糕', POT: '锅', COOKING: '烹饪', WINE: '葡萄酒', COCKTAIL: '鸡尾酒',
+  TROPICAL: '热带', CLINKING: '碰杯', BEER: '啤酒', MUGS: '马克杯', POPPING: '弹出', CORK: '软木塞', POPCORN: '爆米花',
+  WRAPPED: '包装', BIRTHDAY: '生日', CAKE: '蛋糕', FATHER: '父亲', CHRISTMAS: '圣诞', FIREWORKS: '烟花', SPARKLER: '仙女棒',
+  BALLOON: '气球', PARTY: '派对', POPPER: '礼花', PINE: '松树', DECORATION: '装饰', CARP: '鲤鱼', STREAMER: '彩带',
+  // Arts, sport, and leisure
+  STUDIO: '录音室', MICROPHONE: '麦克风', LEVEL: '水平仪', SLIDER: '滑块', ADMISSION: '入场', TICKETS: '票', FERRIS: '摩天',
+  WHEEL: '轮', ROLLER: '过山车', COASTER: '过山车', MOVIE: '电影', CAMERA: '相机', CINEMA: '影院', HEADPHONE: '耳机',
+  ARTIST: '艺术家', PALETTE: '调色板', TICKET: '票', CLAPPER: '场记板', BOARD: '板', PERFORMING: '表演', ARTS: '艺术',
+  SLOT: '老虎机', MACHINE: '机器', BILLIARDS: '台球', BOWLING: '保龄球', SAXOPHONE: '萨克斯管', GUITAR: '吉他', TRUMPET: '小号',
+  VIOLIN: '小提琴', RUNNING: '跑步', SHIRT: '衬衫', SASH: '腰带', SKI: '滑雪', SNOWBOARDER: '滑雪者', RUNNER: '跑者',
+  SURFER: '冲浪者', SPORTS: '运动', MEDAL: '奖牌', TROPHY: '奖杯', AMERICAN: '美式', FOOTBALL: '橄榄球', RUGBY: '英式橄榄球',
+  SWIMMER: '游泳者', WEIGHT: '重量', LIFTER: '举重者', GOLFER: '高尔夫球手', VOLLEYBALL: '排球', HOCKEY: '曲棍球',
+  STICK: '球杆', PUCK: '冰球', FENCER: '击剑者', WRESTLERS: '摔跤者', HANDBALL: '手球', DIVING: '潜水', MASK: '面具',
+  CLINKING: '碰杯', GLASSES: '玻璃杯', TUMBLER: '平底杯', SPOON: '勺子', RIFLE: '步枪', BOXING: '拳击', GLOVE: '手套',
+  MARTIAL: '武术', UNIFORM: '制服', SOFTBALL: '垒球', CROISSANT: '羊角面包', AVOCADO: '牛油果', CUCUMBER: '黄瓜', BACON: '培根',
+  CARROT: '胡萝卜', BAGUETTE: '法棍', MILK: '牛奶', PEANUTS: '花生', KIWIFRUIT: '猕猴桃', PANCAKES: '煎饼', DUMPLING: '饺子',
+  FORTUNE: '幸运', COOKIE: '曲奇', CHOPSTICKS: '筷子', CUP: '杯子', STRAW: '吸管', COCONUT: '椰子', BROCCOLI: '西兰花',
+  PRETZEL: '椒盐卷饼', CUT: '切块', SANDWICH: '三明治', CANNED: '罐装', MANGO: '芒果', BAGEL: '百吉饼', NINJA: '忍者',
+  SARI: '纱丽', GOGGLES: '护目镜', HIKING: '徒步', BOOT: '靴子',
+  // Animals and people
+  TIGER: '老虎', LEOPARD: '豹子', RABBIT: '兔子', CROCODILE: '鳄鱼', SNAIL: '蜗牛', GOAT: '山羊', SHEEP: '绵羊', MONKEY: '猴子',
+  ROOSTER: '公鸡', CHICKEN: '鸡', BOAR: '野猪', OCTOPUS: '章鱼', HONEYBEE: '蜜蜂', BLOWFISH: '河豚', TURTLE: '乌龟',
+  HATCHING: '孵化', BIRD: '鸟', PENGUIN: '企鹅', KOALA: '考拉', POODLE: '贵宾犬', DOLPHIN: '海豚', CHIPMUNK: '花栗鼠',
+  TONGUE: '舌头', EYEGLASSES: '眼镜', NECKTIE: '领带', JEANS: '牛仔裤', DRESS: '连衣裙', KIMONO: '和服', BIKINI: '比基尼',
+  PURSE: '钱包', HANDBAG: '手提包', POUCH: '小袋', FOOTPRINTS: '脚印', BUST: '人像', SILHOUETTE: '剪影', GIRL: '女孩', FAMILY: '家庭',
+  POLICE: '警察', OFFICER: '警官', BRIDE: '新娘', VEIL: '面纱', TURBAN: '头巾', WORKER: '工人', PRINCESS: '公主', GHOST: '幽灵',
+  GUARDSMAN: '卫兵', DANCER: '舞者', LIPSTICK: '口红', HAIRCUT: '理发', BARBER: '理发师', SYRINGE: '注射器', PILL: '药丸',
+  BOUQUET: '花束', WEDDING: '婚礼', ANGER: '愤怒', BOMB: '炸弹', COLLISION: '碰撞', SPLASHING: '飞溅', SWEAT: '汗', DROPLET: '水滴',
+  FLEXED: '弯曲', BICEPS: '肱二头肌', DIZZY: '眩晕', SPEECH: '言语', THOUGHT: '想法', MONEY: '钱', WINGS: '翅膀', SEAT: '座位',
+  COMPUTER: '电脑', PERSONAL: '个人', BRIEFCASE: '公文包', MINIDISC: '迷你光盘', PAGE: '页面', CURL: '卷曲', CHART: '图表', TREND: '趋势',
+  CLIPBOARD: '剪贴板', PUSHPIN: '图钉', PAPERCLIP: '回形针', LEDGER: '账本', BOOKS: '书籍', BOOK: '书', MEMO: '备忘录', PAGER: '寻呼机',
+  LOUDSPEAKER: '扬声器', CHEERING: '欢呼', MEGAPHONE: '扩音器', OUTBOX: '发件箱', TRAY: '托盘', PACKAGE: '包裹', POSTBOX: '邮箱',
+  NEWSPAPER: '报纸', VIBRATION: '振动', TELEVISION: '电视', VIDEOCASSETTE: '录像带', FILM: '胶片', PROJECTOR: '投影仪', PORTABLE: '便携式',
+  STEREO: '音响', PRAYER: '祷告', BEADS: '念珠', LINK: '链接', INPUT: '输入', SYMBOLS: '符号', HOCHO: '菜刀', PISTOL: '手枪',
+  MICROSCOPE: '显微镜', TELESCOPE: '望远镜', OM: '唵', KAABA: '天房', MOSQUE: '清真寺', SYNAGOGUE: '犹太教堂', BULLHORN: '扩音器',
+  CANDLE: '蜡烛', HOLE: '洞', DARK: '深色', SUNGLASSES: '太阳镜', SPIDER: '蜘蛛', JOYSTICK: '摇杆', MAN: '男人', HANDSHAKE: '握手',
+  ROLLING: '滚动', FLOOR: '地面', LAUGHING: '大笑', BREAST: '乳房', FEEDING: '喂养', SELFIE: '自拍', PRINCE: '王子', TUXEDO: '燕尾服',
+  MOTHER: '母亲', SHRUG: '耸肩', JUGGLING: '杂耍', PENTATHLON: '五项全能', GLASS: '玻璃杯', FORTUNE: '幸运', AVOCADO: '牛油果',
+  // Transport, places, and tools
+  MINIDISC: '迷你光盘', STEAM: '蒸汽', LOCOMOTIVE: '机车', STATION: '车站', TROLLEYBUS: '无轨电车', MINIBUS: '小巴', AMBULANCE: '救护车',
+  AUTOMOBILE: '汽车', ONCOMING: '迎面驶来', RECREATIONAL: '休闲', VEHICLE: '车辆', DELIVERY: '配送', TRUCK: '卡车', ARTICULATED: '铰接式',
+  LORRY: '卡车', MONORAIL: '单轨', SUSPENSION: '悬挂', RAILWAY: '铁路', AERIAL: '空中', TRAMWAY: '缆车', ROWBOAT: '划艇',
+  SPEEDBOAT: '快艇', CONSTRUCTION: '施工', SMOKING: '吸烟', LITTER: '垃圾', BICYCLIST: '骑车人', PEDESTRIAN: '行人', WOMENS: '女性',
+  CUSTOMS: '海关', BAGGAGE: '行李', CLAIM: '领取处', BOYS: '男孩', GIRLS: '女孩', COUCH: '沙发', LAMP: '灯', WORSHIP: '礼拜',
+  OCTAGONAL: '八角形', SHOPPING: '购物', TROLLEY: '手推车', STUPA: '佛塔', PAGODA: '宝塔', HINDU: '印度教', TEMPLE: '寺庙', LANDSLIDE: '山体滑坡',
+  WIRELESS: '无线', PLAYGROUND: '游乐场', SLIDE: '滑梯', MOTORWAY: '高速公路', TRACK: '轨道', DIESEL: '柴油', SCOOTER: '踏板车',
+  CANOE: '独木舟', SLED: '雪橇', SKATEBOARD: '滑板', AUTO: '汽车', RICKSHAW: '人力车', PICKUP: '皮卡',
+  FORTUNE: '幸运', OCCULTATION: '掩星', ECLIPSE: '食', LUNAR: '月', TARGET: '靶心', HORNS: '角',
+}));
+
+for (const [token, translation] of EMOJI_TOKEN_NAMES) TOKEN_NAMES.set(token, translation);
+
+const SPECIAL_TOKEN_NAMES = new Map(Object.entries({
+  // Remaining mathematical, astronomical, and historical terms
+  MULTISET: '多重集', ASSERTION: '断言', MODELS: '模型', FORCES: '力', DRIVE: '驱动', SLOW: '慢', SPOT: '点',
+  INCREASES: '增加', GLEICH: '相等', STARK: '强', THERMODYNAMIC: '热力学', RULE: '规则', DELAYED: '延迟', MINY: '最小值',
+  JOIN: '连接', PIPING: '管道', PROJECTION: '投影', DOMAIN: '定义域', ANTIRESTRICTION: '反限制', RANGE: '值域',
+  FORKING: '分叉', NONFORKING: '非分叉', ELECTRONICS: '电子学', UNCERTAINTY: '不确定性', TRANSPLUTO: '海王星外行星',
+  PROSERPINA: '普罗塞耳皮娜', ASTRAEA: '智神星', HYGIEA: '健神星', PHOLUS: '福律斯', NESSUS: '涅索斯', CUPIDO: '丘比特',
+  HADES: '哈得斯', ZEUS: '宙斯', KRONOS: '克洛诺斯', APOLLON: '阿波罗', ADMETOS: '阿德墨托斯', POSEIDON: '波塞冬', SEDNA: '赛德娜',
+  RUSSIAN: '俄罗斯', ASTROLOGICAL: '占星', VIGINTILE: '二十分相', NOVILE: '九分相', QUINTILE: '五分相', BINOVILE: '双九分相',
+  SENTAGON: '十边相', TREDECILE: '十三分相', UNITED: '联合', DOUBLED: '双重', PASSED: '通过', EDITORIAL: '编辑', CORONIS: '冠状符',
+  PARAGRAPHOS: '段落符', FORKED: '分叉', HYPODIASTOLE: '下分号', ANCORA: '锚形符', CAPITULUM: '章首符', PARAGRAPHUS: '段落符',
+  GETA: '下驮符', ALTERNATION: '交替', PARTNERSHIP: '合作', LIMITED: '有限', LIABILITY: '责任', PHAGS: '萨迦文', KAYAH: '克耶文',
+  CHAM: '占文', RIAL: '里亚尔', CENTRELINE: '中心线', OVERLINE: '上划线', OBJECT: '对象', REPLACEMENT: '替换', NOMISMA: '诺米斯马',
+  ASCIA: '阿斯基亚', CAUCASIAN: '高加索', ALBANIAN: '阿尔巴尼亚', CITATION: '引文', LYDIAN: '吕底亚文', TRIANGULAR: '三角形',
+  YEZIDI: '雅兹迪文', HYPHENATION: '断字', KAITHI: '凯提文', ENUMERATION: '编号', AHOM: '阿洪姆文', DIVES: '迪韦斯',
+  AKURU: '阿库鲁文', GAP: '间隙', FILLER: '填充', MARCHEN: '马钦文', MAKASAR: '望加锡文', PASSIMBANG: '帕西邦', KIRAT: '基拉特文',
+  RAI: '拉伊', YUPI: '尤皮', MEDEFAIDRIN: '梅德法伊德林', AIVA: '艾瓦', NPN: 'NPN', PNP: 'PNP', RECEPTACLE: '插座',
+  EXPLOSION: '爆炸', HORIZON: '地平线', FUNNEL: '漏斗', KEYHOLE: '钥匙孔', FRAGILE: '易碎', APPLE: '苹果', HEBE: '赫柏',
+  IRIS: '虹神星', FLORA: '花神星', METIS: '墨提斯', PARTHENOPE: '帕耳忒诺珀', VICTORIA: '维多利亚', EGERIA: '埃格里亚',
+  IRENE: '伊琳娜', EUNOMIA: '欧诺弥亚', PSYCHE: '普赛克', THETIS: '忒提斯', MELPOMENE: '墨尔波墨涅', FORTUNA: '福尔图娜',
+  ASTRONOMICAL: '天文', ASTEROID: '小行星', BELLONA: '贝罗娜', AMPHITRITE: '安菲特里忒', LEUKOTHEA: '勒科忒娅',
+  DIGRAM: '二元图', EARTHLY: '尘世', HEAVEN: '天', HUMAN: '人', WANCHO: '万乔文', NGUN: '恩贡', INDIC: '印度数字',
+  SIYAQ: '西雅克', PLACEHOLDER: '占位符', OTTOMAN: '奥斯曼', MARRATAN: '马拉坦', COPYLEFT: '反版权', ROUNDED: '圆角', SHOU: '寿',
+  SHUANGXI: '双喜',
+  // Common emoji terms not shared with the core table
+  CITYSCAPE: '城市景观', CLASSICAL: '古典', BUILDING: '建筑', DESERT: '沙漠', ISLAND: '岛屿', NATIONAL: '国家', PARK: '公园',
+  STADIUM: '体育场', OFFICE: '办公室', EUROPEAN: '欧洲', POST: '邮政', FACTORY: '工厂', IZAKAYA: '居酒屋', LANTERN: '灯笼',
+  ROSETTE: '花饰', LABEL: '标签', BADMINTON: '羽毛球', RACQUET: '球拍', SHUTTLECOCK: '羽毛球', AMPHORA: '双耳瓶', SPEAKER: '扬声器',
+  BOOKMARK: '书签', CHAPTER: '章节', POCKET: '口袋', CALCULATOR: '计算器', TAPE: '磁带', CARTRIDGE: '盒式带', TRACKBALL: '轨迹球',
+  DOCUMENT: '文档', WASTEBASKET: '废纸篓', MINIMIZE: '最小化', MAXIMIZE: '最大化', OVERLAP: '重叠', COMPRESSION: '压缩', MOUNT: '山', FUJI: '富士山',
+  STATUE: '雕像', LIBERTY: '自由', MOYAI: '摩艾石像', BATHTUB: '浴缸', BASKETBALL: '篮球', HOOP: '篮筐',
+  CRAB: '螃蟹', SCORPION: '蝎子', TURKEY: '火鸡', EAGLE: '鹰', DUCK: '鸭子', SHARK: '鲨鱼', BUTTERFLY: '蝴蝶', DEER: '鹿',
+  GORILLA: '大猩猩', LIZARD: '蜥蜴', RHINOCEROS: '犀牛', SQUID: '鱿鱼', HEDGEHOG: '刺猬', SAUROPOD: '蜥脚类恐龙', CRICKET: '蟋蟀',
+  KANGAROO: '袋鼠', LLAMA: '美洲驼', PEACOCK: '孔雀', HIPPOPOTAMUS: '河马', PARROT: '鹦鹉', RACCOON: '浣熊', LOBSTER: '龙虾',
+  MOSQUITO: '蚊子', MICROBE: '微生物', BADGER: '獾', SWAN: '天鹅', MAMMOTH: '猛犸象', DODO: '渡渡鸟', SLOTH: '树懒',
+  OTTER: '水獭', ORANGUTAN: '猩猩', SKUNK: '臭鼬', FLAMINGO: '火烈鸟', OYSTER: '牡蛎', BEAVER: '海狸', BISON: '野牛',
+  SEAL: '海豹', PROBING: '探测', CANE: '手杖', TOOTH: '牙齿', SUPERHERO: '超级英雄', SUPERVILLAIN: '超级反派', SAFETY: '安全',
+  VEST: '背心', MOTORIZED: '电动', WHEELCHAIR: '轮椅', MANUAL: '手动', CHEESE: '奶酪', WEDGE: '楔块', CUPCAKE: '纸杯蛋糕',
+  GARLIC: '大蒜', ONION: '洋葱', FALAFEL: '炸豆丸子', WAFFLE: '华夫饼', BUTTER: '黄油', MATE: '马黛茶', TROLL: '巨魔',
+}));
+
+for (const [token, translation] of SPECIAL_TOKEN_NAMES) TOKEN_NAMES.set(token, translation);
+
+for (const [token, translation] of Object.entries({
+  VULCANUS: '火神星', DITTO: '同上', HAUMEA: '妊神星', MAKEMAKE: '鸟神星', GONGGONG: '共工星', QUAOAR: '创神星',
+  ORCUS: '亡神星', CORAL: '珊瑚', NEST: '鸟巢', EGGS: '鸟蛋', HYACINTH: '风信子', JELLYFISH: '水母', WING: '翅膀',
+  VOIDED: '空心', FOG: '雾', RAT: '老鼠', OX: '牛', COW: '奶牛', CAT: '猫', RAM: '公羊', DOG: '狗', PIG: '猪',
+  BUG: '虫', ANT: '蚂蚁', BOY: '男孩', IMP: '小鬼', DVD: 'DVD 光盘', BED: '床', HUT: '小屋', EGG: '鸡蛋', PIE: '馅饼',
+  BAT: '蝙蝠', OWL: '猫头鹰', ELF: '精灵', FLY: '苍蝇', JAR: '罐子', ALL: '全部', SET: '集合', DEL: '删除', OUT: '输出',
+  CONTROL: '控制', COMMAND: '命令', OPTION: '选项', ESCAPE: '退出', TIE: '领结', CAR: '汽车', HUB: '轮毂', OVAL: '椭圆',
+  CAUTION: '警告', CHI: '希腊字母凯', RHO: '希腊字母罗', SUNUWAR: '苏努瓦尔文', DIRECT: '命中', HIT: '命中',
+  LIMBU: '林布文', LOO: '卢', MILKY: '银河', WAY: '道', PILE: '堆', POO: '便便', SLEUTH: '侦探', SPY: '间谍', CANCELLATION: '取消',
+  GOAL: '球门', NET: '网', REX: '霸王龙',
+  NPN: 'NPN 晶体管', PNP: 'PNP 晶体管',
+})) TOKEN_NAMES.set(token, translation);
+
 // Connective / filler words dropped from a composed name.
 const STOP_TOKENS = new Set(['OF', 'FOR', 'TO', 'FROM', 'IN', 'ON', 'THE', 'A', 'AN', 'AND', 'OR', 'WITH', 'AS', 'AT', 'BY', 'INTO', 'OVER', 'UNDER', 'BETWEEN', 'THROUGH', 'TYPE']);
 
@@ -541,13 +755,13 @@ export function getChineseName(codePoint, name) {
     text = text.replace(re, ` ${COMPOUND_TOKENS.get(key)} `);
   }
 
-  // 2) Translate remaining uppercase tokens. Policy: every distinguishing content
-  //    token must resolve, otherwise we fall back to English rather than emit a
-  //    misleading fragment (e.g. "符号", "标点"). This keeps translations accurate.
+  // 2) Translate remaining uppercase tokens. Unknown proper names are omitted
+  //    after the recognizable Chinese part (for example a rare script's local
+  //    transliteration). This keeps the UI Chinese instead of falling back to a
+  //    full English UCD name.
   const tokens = text.split(/[^A-Z0-9\u4e00-\u9fff]+/).filter(Boolean);
   const parts = [];
-  let distinguishing = 0;
-  let untranslatedContent = 0;
+  let distinguishing = /[\u4e00-\u9fff]/.test(text) ? 1 : 0;
 
   for (let i = 0; i < tokens.length; i += 1) {
     const token = tokens[i];
@@ -563,7 +777,7 @@ export function getChineseName(codePoint, name) {
     // A trailing bare Latin letter or digit usually *is* the character being
     // encoded (e.g. "CIRCLED LATIN CAPITAL LETTER A", "PARENTHESIZED DIGIT TWO")
     // — preserve it as content rather than dropping it like an article.
-    const isTrailingLiteral = isLast && /^[A-Z0-9]{1,3}$/.test(token);
+    const isTrailingLiteral = isLast && tokens.length > 1 && /^(?:[A-Z]|\d{1,3})$/.test(token);
     if (isTrailingLiteral && !TOKEN_NAMES.has(token) && !/^\d+$/.test(token)) {
       parts.push(token);
       distinguishing += 1;
@@ -582,7 +796,8 @@ export function getChineseName(codePoint, name) {
       continue;
     }
     if (GENERIC_TOKENS.has(token)) {
-      parts.push(TOKEN_NAMES.get(token));
+      const generic = TOKEN_NAMES.get(token);
+      if (generic) parts.push(generic);
       continue;
     }
     // Retry singular form for plurals (MARKS→MARK, STARS→STAR …).
@@ -596,12 +811,14 @@ export function getChineseName(codePoint, name) {
       }
     }
 
-    // An unresolved distinguishing word means the translation would lose the
-    // character's identity — reject it so the caller keeps the English name.
-    untranslatedContent += 1;
+    // An unresolved proper name is intentionally omitted. The known script,
+    // shape, or category terms still provide a useful Chinese label.
   }
 
-  if (untranslatedContent > 0 || distinguishing === 0) return '';
+  const translated = tidy(parts.join(''));
+  if (translated && distinguishing > 0) return translated;
 
-  return tidy(parts.join(''));
+  // Keep even an unusual UCD record from exposing its all-English identifier in
+  // Simplified Chinese. The code point remains visible in the detail panel.
+  return `字符 U+${codePoint.toUpperCase()}`;
 }

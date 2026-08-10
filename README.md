@@ -2,7 +2,7 @@
 
 > 搜索、复制 Unicode 核心符号，并查看码点、UTF-8、HTML、CSS 与 JavaScript 编码。
 
-🌐 **在线演示**：<https://unicode.wangruofeng007.com/>
+🌐 **在线演示**：<https://wangruofeng.github.io/unicode-symbol-picker/>
 
 基于 Unicode 17.0.0 的纯前端符号选择器：Astro 静态站点 + 原生 TypeScript，无后端、无运行时框架。
 
@@ -53,21 +53,11 @@ npm run data:build      # 以上四步的完整流水线
 
 ## 部署
 
-本项目部署在 GitHub Pages，使用自定义域名 `unicode.wangruofeng007.com`。
+本项目部署在 GitHub Pages，使用 GitHub 提供的默认域名。
 
 - 推送到 `main` 分支即触发 `.github/workflows/deploy.yml`，自动构建并部署。
 - 仓库 Settings → Pages → Source 设为 **GitHub Actions**。
-- 自定义域名通过 `public/CNAME` 声明。
-
-### 配置自定义域名
-
-在你的 DNS 服务商添加以下记录：
-
-| 类型  | 主机名  | 值                          |
-| ----- | ------- | --------------------------- |
-| CNAME | unicode | wangruofeng.github.io       |
-
-DNS 生效后，在仓库 **Settings → Pages → Custom domain** 填入 `unicode.wangruofeng007.com` 并启用 **Enforce HTTPS**。
+- 站点地址为 <https://wangruofeng.github.io/unicode-symbol-picker/>。
 
 ## License
 

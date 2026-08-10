@@ -1,5 +1,8 @@
+---
+const base = import.meta.env.BASE_URL;
+---
 <header class="site-header">
-  <a class="brand" href="/" aria-label="Unicode Symbol Picker">
+  <a class="brand" href={base} aria-label="Unicode Symbol Picker">
     <span class="brand-mark" aria-hidden="true">∑</span>
     <span class="brand-copy">
       <span class="brand-title" data-i18n="title">Unicode 符号选择器</span>

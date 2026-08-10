@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://unicode.wangruofeng007.com/sitemap.xml
+Sitemap: https://wangruofeng.github.io/unicode-symbol-picker/sitemap.xml

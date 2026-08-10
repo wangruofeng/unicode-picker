@@ -163,7 +163,8 @@ function updateUrl(): void {
   const selected = selectedCatalogSymbol();
   if (selected) params.set('symbol', selected.codePoints[0]);
   const query = params.toString();
-  window.history.replaceState({}, '', query ? `/?${query}` : '/');
+  const base = import.meta.env.BASE_URL;
+  window.history.replaceState({}, '', query ? `${base}?${query}` : base);
 }
 
 function categoryName(id: string): string {
@@ -564,7 +565,7 @@ async function init(): Promise<void> {
       const symbol = findByCodePoint(state.catalog, pendingSymbol);
       if (symbol) await selectSymbol(symbol.id, { copy: false, updateHistory: false });
     }
-    if ('serviceWorker' in navigator) void navigator.serviceWorker.register('/sw.js');
+    if ('serviceWorker' in navigator) void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`);
   } catch {
     renderError();
   }

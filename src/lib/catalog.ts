@@ -1,7 +1,7 @@
 import type { CatalogSymbol, Language, UnicodeManifest, UnicodeSymbol } from './types';
 
 export const UNICODE_VERSION = '17.0.0';
-export const DATA_ROOT = `/data/${UNICODE_VERSION}`;
+export const DATA_ROOT = `${import.meta.env.BASE_URL}data/${UNICODE_VERSION}`;
 
 async function readJson<T>(path: string): Promise<T> {
   const response = await fetch(path);
