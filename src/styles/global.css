@@ -251,7 +251,10 @@ a { color: inherit; }
 .category-tab.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 
 .app-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
-body.picker-app .site-header,
+body.picker-app .site-header {
+  position: relative;
+  z-index: 30;
+}
 body.picker-app .search-toolbar,
 body.picker-app .category-tabs {
   position: relative;
