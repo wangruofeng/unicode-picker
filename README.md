@@ -57,7 +57,7 @@ npm run data:build      # 以上四步的完整流水线
 
 - 推送到 `main` 分支即触发 `.github/workflows/deploy.yml`，自动构建并部署。
 - 仓库 Settings → Pages → Source 设为 **GitHub Actions**。
-- 站点地址为 <https://wangruofeng.github.io/unicode-symbol-picker/>。
+- 站点地址为 <https://wangruofeng.github.io/unicode-symbol-picker/>。 
 
 ## License
 
