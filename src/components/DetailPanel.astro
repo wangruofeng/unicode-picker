@@ -1,0 +1,47 @@
+<aside class="detail-panel hidden" id="detailPanel" aria-label="Symbol details">
+  <div class="detail-header">
+    <div id="detailChar" class="detail-character" aria-label="Selected symbol"></div>
+    <div class="detail-heading">
+      <h2 id="detailName">—</h2>
+      <p id="detailNameEn">—</p>
+    </div>
+    <button id="detailFavorite" class="detail-favorite" type="button" data-i18n-title="favorite" aria-label="收藏">☆</button>
+    <button id="detailClose" class="detail-close" type="button" data-i18n-title="close" data-i18n-aria="close" aria-label="关闭详情">×</button>
+  </div>
+  <div class="detail-scroll">
+    <div id="detailWarning" class="detail-warning" hidden></div>
+    <div class="detail-section">
+      <h3 data-i18n="encoding">编码信息</h3>
+      <div class="detail-row"><span data-i18n="unicode">Unicode</span><code id="detailCodePoint">—</code><button type="button" class="copy-mini" data-copy-target="detailCodePoint" data-i18n-title="copyUnicode" aria-label="复制 Unicode">⧉</button></div>
+      <div class="detail-row"><span data-i18n="decimal">十进制</span><code id="detailDecimal">—</code><button type="button" class="copy-mini" data-copy-target="detailDecimal" data-i18n-title="copyUnicode" aria-label="复制十进制编码">⧉</button></div>
+      <div class="detail-row"><span data-i18n="utf8">UTF-8</span><code id="detailUtf8">—</code><button type="button" class="copy-mini" data-copy-target="detailUtf8" data-i18n-title="copyUtf8" aria-label="复制 UTF-8">⧉</button></div>
+      <div class="detail-row"><span data-i18n="htmlHex">HTML 十六进制</span><code id="detailHtmlHex">—</code><button type="button" class="copy-mini" data-copy-target="detailHtmlHex" data-i18n-title="copyHtml" aria-label="复制 HTML">⧉</button></div>
+      <div class="detail-row"><span data-i18n="htmlDecimal">HTML 十进制</span><code id="detailHtmlDecimal">—</code><button type="button" class="copy-mini" data-copy-target="detailHtmlDecimal" data-i18n-title="copyHtml" aria-label="复制 HTML">⧉</button></div>
+      <div class="detail-row"><span data-i18n="css">CSS content</span><code id="detailCss">—</code><button type="button" class="copy-mini" data-copy-target="detailCss" data-i18n-title="copyCss" aria-label="复制 CSS">⧉</button></div>
+      <div class="detail-row"><span data-i18n="javascript">JavaScript</span><code id="detailJs">—</code><button type="button" class="copy-mini" data-copy-target="detailJs" data-i18n-title="copyJs" aria-label="复制 JavaScript">⧉</button></div>
+    </div>
+    <div class="detail-section">
+      <h3 data-i18n="properties">Unicode 属性</h3>
+      <dl class="property-list">
+        <div><dt data-i18n="generalCategory">General Category</dt><dd id="detailGeneralCategory">—</dd></div>
+        <div><dt data-i18n="block">区段</dt><dd id="detailBlock">—</dd></div>
+        <div><dt data-i18n="script">文字</dt><dd id="detailScript">—</dd></div>
+        <div><dt data-i18n="plane">平面</dt><dd id="detailPlane">—</dd></div>
+        <div><dt data-i18n="age">加入版本</dt><dd id="detailAge">—</dd></div>
+      </dl>
+      <div id="detailCategories" class="tag-list"></div>
+      <div id="detailAliases" class="alias-list" hidden></div>
+    </div>
+    <div id="detailEmojiLink" class="emoji-link" hidden>
+      <span class="emoji-link-mark" aria-hidden="true">✦</span>
+      <a href="https://emoji-picker.wangruofeng007.com/" target="_blank" rel="noopener noreferrer" data-i18n="emojiLink">查看完整 Emoji、肤色和组合变体 →</a>
+    </div>
+    <div class="detail-actions">
+      <button id="shareButton" type="button" class="secondary-button" data-i18n="share">复制分享链接</button>
+    </div>
+    <div class="detail-section related-section">
+      <h3 data-i18n="related">相似字符</h3>
+      <div id="relatedList" class="related-list"></div>
+    </div>
+  </div>
+</aside>

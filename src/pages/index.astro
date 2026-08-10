@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import SearchBar from '../components/SearchBar.astro';
+import CategoryTabs from '../components/CategoryTabs.astro';
+import SymbolGrid from '../components/SymbolGrid.astro';
+import DetailPanel from '../components/DetailPanel.astro';
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Unicode 符号选择器：搜索、复制与码点查询</title>
+    <meta name="description" content="搜索、复制 Unicode 核心符号，并查看码点、UTF-8、HTML、CSS 与 JavaScript 编码。" />
+    <link rel="canonical" href="https://unicode.wangruofeng007.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="Unicode 符号选择器" />
+    <meta property="og:description" content="搜索、复制 Unicode 核心符号，并查看开发者编码格式。" />
+    <meta property="og:url" content="https://unicode.wangruofeng007.com/" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'Unicode Symbol Picker',
+      description: 'Search and copy Unicode core symbols with developer encodings.',
+      url: 'https://unicode.wangruofeng007.com/',
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Web',
+      inLanguage: ['zh-CN', 'en'],
+      isAccessibleForFree: true
+    })} />
+  </head>
+  <body class="picker-app">
+    <Header />
+    <SearchBar />
+    <CategoryTabs />
+    <div class="app-body">
+      <main id="mainContent">
+        <SymbolGrid />
+      </main>
+      <DetailPanel />
+    </div>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="../client/app.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+---
+import '../../styles/global.css';
+import { blockSymbols, readManifest } from '../../lib/build-data';
+
+export function getStaticPaths() {
+  return readManifest().blocks.map((block) => ({ params: { slug: block.slug }, props: { block } }));
+}
+const { block } = Astro.props;
+const items = blockSymbols(block.slug);
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{block.name} · Unicode 符号选择器</title>
+    <meta name="description" content={`浏览 Unicode ${block.name} 区段中的 ${items.length} 个符号。`} />
+    <link rel="canonical" href={`https://unicode.wangruofeng007.com/block/${block.slug}/`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="seo-page">
+    <header class="seo-header">
+      <a href="/" class="seo-brand"><span class="brand-mark" aria-hidden="true">∑</span>Unicode 符号选择器</a>
+      <a href="/" class="seo-back">打开选择器 →</a>
+    </header>
+    <main class="seo-main">
+      <p class="seo-kicker">Unicode 17.0 / Block</p>
+      <h1>{block.name}</h1>
+      <p class="seo-lede">该区段包含 {items.length} 个可复制的 Unicode 核心符号。</p>
+      <div class="seo-symbol-list">
+        {items.slice(0, 160).map((symbol) => (
+          <a class="seo-symbol" href={`/?symbol=${encodeURIComponent(symbol.codePoints[0])}`}>
+            <span class="symbol-char" aria-hidden="true">{symbol.value}</span>
+            <span>{symbol.nameZh || symbol.name}</span>
+            <code>{symbol.codePoints[0]}</code>
+          </a>
+        ))}
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+---
+import '../../styles/global.css';
+import { readCatalog, readManifest } from '../../lib/build-data';
+
+const catalog = readCatalog();
+export function getStaticPaths() {
+  return readManifest().categories.map((category) => ({ params: { slug: category.id }, props: { category } }));
+}
+const { category } = Astro.props;
+const items = catalog.filter((symbol) => symbol.categories.includes(category.id));
+const siteTitle = `${category.names['zh-CN']} · Unicode 符号选择器`;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={`浏览 ${category.names['zh-CN']} 分类中的 ${items.length} 个 Unicode 符号。`} />
+    <link rel="canonical" href={`https://unicode.wangruofeng007.com/category/${category.id}/`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="seo-page">
+    <header class="seo-header">
+      <a href="/" class="seo-brand"><span class="brand-mark" aria-hidden="true">∑</span>Unicode 符号选择器</a>
+      <a href="/" class="seo-back">打开选择器 →</a>
+    </header>
+    <main class="seo-main">
+      <p class="seo-kicker">Unicode 17.0 / Category</p>
+      <h1>{category.names['zh-CN']}</h1>
+      <p class="seo-lede">这里收录 {items.length} 个属于“{category.names['zh-CN']}”的核心 Unicode 符号。点击任意符号可返回选择器查看编码详情。</p>
+      <div class="seo-symbol-list">
+        {items.slice(0, 120).map((symbol) => (
+          <a class="seo-symbol" href={`/?category=${category.id}&symbol=${encodeURIComponent(symbol.codePoints[0])}`}>
+            <span class="symbol-char" aria-hidden="true">{symbol.value}</span>
+            <span>{symbol.nameZh || symbol.name}</span>
+            <code>{symbol.codePoints[0]}</code>
+          </a>
+        ))}
+      </div>
+    </main>
+  </body>
+</html>

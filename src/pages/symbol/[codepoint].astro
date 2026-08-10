@@ -1,0 +1,47 @@
+---
+import '../../styles/global.css';
+import { readCatalog, readManifest, readSymbolDetail } from '../../lib/build-data';
+import type { CatalogSymbol, UnicodeSymbol } from '../../lib/types';
+
+export function getStaticPaths() {
+  const staticManifest = readManifest();
+  const staticCatalog = readCatalog();
+  const featuredSymbols = staticManifest.featuredIds
+    .map((id) => staticCatalog.find((item) => item.id === id))
+    .filter((item): item is CatalogSymbol => Boolean(item))
+    .map(readSymbolDetail);
+  return featuredSymbols.map((symbol) => ({ params: { codepoint: symbol.id }, props: { symbol } }));
+}
+const { symbol } = Astro.props as { symbol: UnicodeSymbol };
+const displayName = symbol.nameZh || symbol.name;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{displayName} {symbol.codePoints[0]} · Unicode 符号选择器</title>
+    <meta name="description" content={`${displayName}（${symbol.codePoints[0]}）的 Unicode、HTML、CSS 和 JavaScript 编码。`} />
+    <link rel="canonical" href={`https://unicode.wangruofeng007.com/symbol/${symbol.id}/`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="seo-page">
+    <header class="seo-header">
+      <a href="/" class="seo-brand"><span class="brand-mark" aria-hidden="true">∑</span>Unicode 符号选择器</a>
+      <a href={`/?symbol=${encodeURIComponent(symbol.codePoints[0])}`} class="seo-back">在选择器中打开 →</a>
+    </header>
+    <main class="seo-main symbol-detail-page">
+      <div class="symbol-hero-character symbol-char" aria-label={displayName}>{symbol.value}</div>
+      <p class="seo-kicker">{symbol.codePoints[0]} / {symbol.block}</p>
+      <h1>{displayName}</h1>
+      <p class="seo-lede">{symbol.name} · General Category {symbol.generalCategory} · Unicode {symbol.unicodeVersion}</p>
+      <div class="seo-code-table">
+        <div><span>HTML hex</span><code>{symbol.htmlHex}</code></div>
+        <div><span>HTML decimal</span><code>{symbol.htmlDecimal}</code></div>
+        <div><span>CSS</span><code>{symbol.cssEscape}</code></div>
+        <div><span>JavaScript</span><code>{symbol.jsEscape}</code></div>
+        <div><span>UTF-8</span><code>{symbol.utf8}</code></div>
+      </div>
+    </main>
+  </body>
+</html>
