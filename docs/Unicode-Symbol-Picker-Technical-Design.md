@@ -70,7 +70,7 @@ flowchart TD
     A["Unicode UCD / CLDR"] --> B["数据生成与校验脚本"]
     B --> C["分类数据与搜索索引"]
     C --> D["Astro 静态构建"]
-    D --> E["Cloudflare Pages"]
+    D --> E["GitHub Pages"]
     E --> F["选择器 / 收藏 / PWA"]
 ~~~
 
@@ -135,6 +135,8 @@ emoji-picker.wangruofeng007.com
 
 ## 6. 项目目录
 
+以下为当前实现的实际结构：
+
 ~~~text
 unicode-picker/
 ├── public/
@@ -143,34 +145,44 @@ unicode-picker/
 │   │       ├── manifest.json
 │   │       ├── catalog.zh-CN.json
 │   │       ├── catalog.en.json
+│   │       ├── hot.json
 │   │       ├── categories/
 │   │       ├── blocks/
 │   │       └── details/
-│   ├── fonts/
 │   ├── favicon.svg
 │   ├── manifest.webmanifest
+│   ├── robots.txt
+│   ├── sitemap.xml
 │   └── sw.js
 ├── scripts/
 │   ├── download-unicode.mjs
 │   ├── parse-ucd.mjs
 │   ├── classify-symbols.mjs
+│   ├── name-zh.mjs
 │   ├── build-search-index.mjs
 │   └── validate-data.mjs
 ├── src/
+│   ├── assets/
+│   │   └── fonts/            # 自托管符号字体 + OFL 许可证
+│   ├── client/
+│   │   └── app.ts            # 选择器全部交互逻辑
 │   ├── components/
 │   │   ├── Header.astro
 │   │   ├── SearchBar.astro
 │   │   ├── CategoryTabs.astro
 │   │   ├── SymbolGrid.astro
-│   │   └── DetailPanel.astro
+│   │   ├── DetailPanel.astro
+│   │   └── DetailModal.astro
 │   ├── lib/
+│   │   ├── types.ts
 │   │   ├── catalog.ts
 │   │   ├── search.ts
 │   │   ├── encoding.ts
 │   │   ├── clipboard.ts
 │   │   ├── storage.ts
 │   │   ├── i18n.ts
-│   │   └── taxonomy.ts
+│   │   ├── taxonomy.ts
+│   │   └── build-data.ts
 │   ├── pages/
 │   │   ├── index.astro
 │   │   ├── category/[slug].astro
@@ -313,6 +325,19 @@ interface CategoryRule {
 ~~~
 
 一个字符可以属于多个分类。
+
+### 9.1 虚拟分类
+
+分类栏除产品分类外还有四个客户端内置的**虚拟分类**，不参与数据生成，也不出现在静态分类页：
+
+~~~text
+all        全部
+recent     最近使用（本地存储）
+favorites  收藏（本地存储）
+emoji      Emoji —— 按 isEmoji 字段过滤，不修改符号的 categories
+~~~
+
+虚拟分类与分类过滤逻辑集中在 `src/lib/taxonomy.ts`：`VIRTUAL_CATEGORY_IDS` 声明 ID 列表，`isVirtualCategory` 校验 URL 参数，`filterSymbolsByCategory` 统一处理筛选，`CATEGORY_ORDER` 定义分类栏展示顺序。URL `?category=emoji` 可保存并恢复该筛选状态。
 
 ## 10. 数据加载策略
 
@@ -475,21 +500,20 @@ URL 状态同步：
 
 ## 14. 字体与显示兼容
 
-推荐字体回退：
+符号字体已自托管在 `src/assets/fonts/`（随仓库提交 OFL 许可证文本），避免依赖外链 CDN：
+
+- `Noto Sans Symbols 2` —— 主符号字体，全量加载
+- `Noto Sans SignWriting`、`Unifont Symbols`、`Unifont Legacy Computing` —— subset 子集，按 `unicode-range` 覆盖 SignWriting、古笔画等缺字区域，按需加载
+
+全局字体栈变量 `--symbol-font`：
 
 ~~~css
-.symbol-char {
-  font-family:
-    "Noto Sans Symbols 2",
-    "Noto Sans Symbols",
-    "Segoe UI Symbol",
-    "Apple Symbols",
-    "Noto Color Emoji",
-    sans-serif;
-
-  unicode-bidi: isolate;
-}
+--symbol-font:
+  "Noto Sans Symbols 2", "Noto Sans SignWriting", "Unifont Symbols", "Unifont Legacy Computing",
+  "Noto Sans Symbols", "Segoe UI Symbol", "Apple Symbols", "Noto Color Emoji", sans-serif;
 ~~~
+
+详情面板与弹窗的大字符改为渲染到 `<canvas>`：先以设备像素比绘制到临时画布，用像素级"已绘制边界"检测（`paintedBounds`）计算字形实际占位并居中缩放，避免不同字体度量导致视觉偏移；`document.fonts.ready` 后重绘一次保证自托管字体加载完成后的字形正确。
 
 注意：
 
@@ -540,7 +564,7 @@ unicode-picker:settings
 首版可以只生成：
 
 - 首页
-- 20 个产品分类页
+- 19 个产品分类页
 - Unicode Block 聚合页
 - 热门符号详情页
 

@@ -69,6 +69,10 @@ const state: {
 let toastTimer: number | undefined;
 let lastFocused: HTMLElement | null = null;
 
+type PaintedBounds = { x: number; y: number; width: number; height: number };
+type RenderedCharacter = { canvas: HTMLCanvasElement; bounds: PaintedBounds };
+type CharacterDraw = { canvas: HTMLCanvasElement; value: string };
+
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
 const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 
@@ -330,35 +334,86 @@ function setDetailText(id: string, value: string): void {
   getElement<HTMLElement>(id).textContent = value || '—';
 }
 
-function fitPreviewCharacter(element: HTMLElement): void {
-  element.style.removeProperty('font-size');
-  if (element.offsetParent === null) return;
-
-  const range = document.createRange();
-  range.selectNodeContents(element);
-  const glyph = range.getBoundingClientRect();
-  const availableWidth = element.clientWidth - 10;
-  const availableHeight = element.clientHeight - 10;
-  if (glyph.width <= availableWidth && glyph.height <= availableHeight) return;
-
-  const fontSize = Number.parseFloat(window.getComputedStyle(element).fontSize);
-  const scale = Math.min(availableWidth / glyph.width, availableHeight / glyph.height, 1);
-  element.style.fontSize = `${fontSize * scale}px`;
+function paintedBounds(context: CanvasRenderingContext2D, width: number, height: number): PaintedBounds | null {
+  const pixels = context.getImageData(0, 0, width, height).data;
+  let left = width;
+  let top = height;
+  let right = -1;
+  let bottom = -1;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      if (pixels[(y * width + x) * 4 + 3] <= 8) continue;
+      left = Math.min(left, x);
+      top = Math.min(top, y);
+      right = Math.max(right, x);
+      bottom = Math.max(bottom, y);
+    }
+  }
+  return right >= left ? { x: left, y: top, width: right - left + 1, height: bottom - top + 1 } : null;
 }
 
-function schedulePreviewCharacterFit(element: HTMLElement): void {
-  fitPreviewCharacter(element);
-  if ('fonts' in document) void document.fonts.ready.then(() => fitPreviewCharacter(element));
+function drawCenteredCharacter(canvas: HTMLCanvasElement, value: string): void {
+  const container = canvas.parentElement;
+  if (!container || container.clientWidth === 0 || container.clientHeight === 0) return;
+
+  const style = window.getComputedStyle(container);
+  const pixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  function render(fontSize: number): RenderedCharacter | null {
+    const stage = document.createElement('canvas');
+    const side = Math.ceil(Math.max(width, height) * 3 * pixelRatio);
+    stage.width = side;
+    stage.height = side;
+    const context = stage.getContext('2d');
+    if (!context) return null;
+    context.font = `${style.fontStyle} ${style.fontVariant} ${style.fontWeight} ${fontSize * pixelRatio}px ${style.fontFamily}`;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(value, side / 2, side / 2);
+    const bounds = paintedBounds(context, side, side);
+    return bounds ? { canvas: stage, bounds } : null;
+  }
+
+  let rendered = render(Number.parseFloat(style.fontSize));
+  if (!rendered) return;
+  canvas.width = Math.round(width * pixelRatio);
+  canvas.height = Math.round(height * pixelRatio);
+  const maxWidth = canvas.width - 10 * pixelRatio;
+  const maxHeight = canvas.height - 10 * pixelRatio;
+  if (rendered.bounds.width > maxWidth || rendered.bounds.height > maxHeight) {
+    const scale = Math.min(maxWidth / rendered.bounds.width, maxHeight / rendered.bounds.height);
+    rendered = render(Number.parseFloat(style.fontSize) * scale);
+    if (!rendered) return;
+  }
+
+  const context = canvas.getContext('2d');
+  if (!context) return;
+  const x = Math.round((canvas.width - rendered.bounds.width) / 2);
+  const y = Math.round((canvas.height - rendered.bounds.height) / 2);
+  context.drawImage(rendered.canvas, rendered.bounds.x, rendered.bounds.y, rendered.bounds.width, rendered.bounds.height, x, y, rendered.bounds.width, rendered.bounds.height);
+}
+
+function scheduleCenteredCharacterDraws(characters: CharacterDraw[]): void {
+  function draw(): void {
+    characters.forEach(({ canvas, value }) => drawCenteredCharacter(canvas, value));
+  }
+
+  requestAnimationFrame(draw);
+  if ('fonts' in document) void document.fonts.ready.then(draw);
 }
 
 function renderDetail(detail: UnicodeSymbol): void {
   state.currentDetail = detail;
   const detailChar = getElement<HTMLDivElement>('detailChar');
-  detailChar.textContent = detail.value;
+  const detailCanvas = document.createElement('canvas');
+  detailCanvas.className = 'detail-character-canvas';
+  detailCanvas.setAttribute('aria-hidden', 'true');
+  detailChar.replaceChildren(detailCanvas);
   detailChar.setAttribute('aria-label', displayName(detail));
   setDetailText('detailName', displayName(detail));
   setDetailText('detailNameEn', detail.name);
-  getElement<HTMLElement>('detailNameEn').hidden = state.lang === 'zh-CN' && Boolean(detail.nameZh);
+  getElement<HTMLElement>('detailNameEn').hidden = state.lang === 'en';
   setDetailText('detailCodePoint', detail.codePoints.join(' '));
   setDetailText('detailDecimal', Array.from(detail.value).map((character) => String(character.codePointAt(0) ?? 0)).join(' '));
   setDetailText('detailUtf8', detail.utf8);
@@ -424,7 +479,7 @@ function renderDetail(detail: UnicodeSymbol): void {
     relatedList.append(relatedButton);
   }
   detailPanel.classList.remove('hidden');
-  schedulePreviewCharacterFit(detailChar);
+  scheduleCenteredCharacterDraws([{ canvas: detailCanvas, value: detail.value }]);
 }
 
 function copyFromButton(button: HTMLButtonElement): void {
@@ -434,10 +489,14 @@ function copyFromButton(button: HTMLButtonElement): void {
 
 function renderDetailModal(detail: UnicodeSymbol): void {
   const modalChar = getElement<HTMLDivElement>('modalChar');
-  modalChar.textContent = detail.value;
+  const canvas = document.createElement('canvas');
+  canvas.className = 'modal-character-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  modalChar.replaceChildren(canvas);
+  scheduleCenteredCharacterDraws([{ canvas, value: detail.value }]);
   setDetailText('modalCharName', displayName(detail));
   setDetailText('modalCharNameEn', detail.name);
-  getElement<HTMLElement>('modalCharNameEn').hidden = state.lang === 'zh-CN' && Boolean(detail.nameZh);
+  getElement<HTMLElement>('modalCharNameEn').hidden = state.lang === 'en';
   setDetailText('modalCodePoint', detail.codePoints.join(' '));
   setDetailText('modalDecimal', Array.from(detail.value).map((character) => String(character.codePointAt(0) ?? 0)).join(' '));
   setDetailText('modalUtf8', detail.utf8);
@@ -478,7 +537,6 @@ function renderDetailModal(detail: UnicodeSymbol): void {
   modalFavorite.textContent = isFavorite ? '★' : '☆';
   modalFavorite.title = t(isFavorite ? 'unfavorite' : 'favorite');
   modalFavorite.setAttribute('aria-label', t(isFavorite ? 'unfavorite' : 'favorite'));
-  schedulePreviewCharacterFit(modalChar);
 }
 
 function openDetailModal(): void {
@@ -486,7 +544,8 @@ function openDetailModal(): void {
   renderDetailModal(state.currentDetail);
   lastFocused = document.activeElement as HTMLElement | null;
   detailModal.hidden = false;
-  schedulePreviewCharacterFit(getElement<HTMLDivElement>('modalChar'));
+  const canvas = document.querySelector<HTMLCanvasElement>('#modalChar .modal-character-canvas');
+  if (canvas) scheduleCenteredCharacterDraws([{ canvas, value: state.currentDetail.value }]);
   document.body.classList.add('modal-open');
   getElement<HTMLButtonElement>('detailModalClose').focus();
 }
@@ -531,11 +590,25 @@ function addRecent(id: string): void {
   writeList(RECENT_KEY, state.recent, 100);
 }
 
-function toggleFavorite(id: string): void {
+function animateTileFavorite(id: string, isFavorite: boolean): void {
+  const favoriteButton = [...symbolGrid.querySelectorAll<HTMLButtonElement>('[data-favorite-id]')]
+    .find((button) => button.dataset.favoriteId === id);
+  if (!favoriteButton) return;
+  favoriteButton.classList.remove('favorite-pop', 'favorite-unpop');
+  void favoriteButton.offsetWidth;
+  favoriteButton.classList.add(isFavorite ? 'favorite-pop' : 'favorite-unpop');
+  const clear = (): void => favoriteButton.classList.remove('favorite-pop', 'favorite-unpop');
+  favoriteButton.addEventListener('animationend', clear, { once: true });
+  window.setTimeout(clear, 220);
+}
+
+function toggleFavorite(id: string, animateTiles = false): void {
   if (state.favorites.has(id)) state.favorites.delete(id);
   else state.favorites.add(id);
+  const isFavorite = state.favorites.has(id);
   writeList(FAVORITES_KEY, [...state.favorites], 100);
   renderContent();
+  if (animateTiles) animateTileFavorite(id, isFavorite);
   if (state.currentDetail?.id === id) {
     renderDetail(state.currentDetail);
     if (!detailModal.hidden) renderDetailModal(state.currentDetail);
@@ -587,7 +660,7 @@ function bindEvents(): void {
     const target = event.target as HTMLElement;
     const favoriteId = target.closest<HTMLElement>('[data-favorite-id]')?.dataset.favoriteId;
     if (favoriteId) {
-      toggleFavorite(favoriteId);
+      toggleFavorite(favoriteId, true);
       return;
     }
     const symbolId = target.closest<HTMLElement>('[data-symbol-id]')?.dataset.symbolId;
