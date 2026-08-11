@@ -331,6 +331,27 @@ function setDetailText(id: string, value: string): void {
   getElement<HTMLElement>(id).textContent = value || '—';
 }
 
+function fitPreviewCharacter(element: HTMLElement): void {
+  element.style.removeProperty('font-size');
+  if (element.offsetParent === null) return;
+
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  const glyph = range.getBoundingClientRect();
+  const availableWidth = element.clientWidth - 10;
+  const availableHeight = element.clientHeight - 10;
+  if (glyph.width <= availableWidth && glyph.height <= availableHeight) return;
+
+  const fontSize = Number.parseFloat(window.getComputedStyle(element).fontSize);
+  const scale = Math.min(availableWidth / glyph.width, availableHeight / glyph.height, 1);
+  element.style.fontSize = `${fontSize * scale}px`;
+}
+
+function schedulePreviewCharacterFit(element: HTMLElement): void {
+  fitPreviewCharacter(element);
+  if ('fonts' in document) void document.fonts.ready.then(() => fitPreviewCharacter(element));
+}
+
 function renderDetail(detail: UnicodeSymbol): void {
   state.currentDetail = detail;
   const detailChar = getElement<HTMLDivElement>('detailChar');
@@ -404,6 +425,7 @@ function renderDetail(detail: UnicodeSymbol): void {
     relatedList.append(relatedButton);
   }
   detailPanel.classList.remove('hidden');
+  schedulePreviewCharacterFit(detailChar);
 }
 
 function copyFromButton(button: HTMLButtonElement): void {
@@ -412,7 +434,8 @@ function copyFromButton(button: HTMLButtonElement): void {
 }
 
 function renderDetailModal(detail: UnicodeSymbol): void {
-  getElement<HTMLDivElement>('modalChar').textContent = detail.value;
+  const modalChar = getElement<HTMLDivElement>('modalChar');
+  modalChar.textContent = detail.value;
   setDetailText('modalCharName', displayName(detail));
   setDetailText('modalCharNameEn', detail.name);
   getElement<HTMLElement>('modalCharNameEn').hidden = state.lang === 'zh-CN' && Boolean(detail.nameZh);
@@ -456,6 +479,7 @@ function renderDetailModal(detail: UnicodeSymbol): void {
   modalFavorite.textContent = isFavorite ? '★' : '☆';
   modalFavorite.title = t(isFavorite ? 'unfavorite' : 'favorite');
   modalFavorite.setAttribute('aria-label', t(isFavorite ? 'unfavorite' : 'favorite'));
+  schedulePreviewCharacterFit(modalChar);
 }
 
 function openDetailModal(): void {
@@ -463,6 +487,7 @@ function openDetailModal(): void {
   renderDetailModal(state.currentDetail);
   lastFocused = document.activeElement as HTMLElement | null;
   detailModal.hidden = false;
+  schedulePreviewCharacterFit(getElement<HTMLDivElement>('modalChar'));
   document.body.classList.add('modal-open');
   getElement<HTMLButtonElement>('detailModalClose').focus();
 }
