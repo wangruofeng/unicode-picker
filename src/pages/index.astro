@@ -6,9 +6,28 @@ import CategoryTabs from '../components/CategoryTabs.astro';
 import SymbolGrid from '../components/SymbolGrid.astro';
 import DetailPanel from '../components/DetailPanel.astro';
 import DetailModal from '../components/DetailModal.astro';
+import { readCatalog, readManifest } from '../lib/build-data';
 
 const base = import.meta.env.BASE_URL;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Build-time data for the crawlable index. The picker UI itself renders
+// client-side, so without this section the homepage body would carry no
+// indexable text and no internal links to the static category/block/symbol
+// pages — leaving ~400 indexable URLs reachable only via the XML sitemap.
+const manifest = readManifest();
+const catalog = readCatalog();
+const catalogById = new Map(catalog.map((symbol) => [symbol.id, symbol]));
+const categories = manifest.categories;
+const blocks = manifest.blocks;
+const featured = manifest.featuredIds
+  .map((id) => catalogById.get(id))
+  .filter((symbol): symbol is NonNullable<typeof symbol> => Boolean(symbol))
+  .slice(0, 120);
+
+const ogImage = new URL(`${base}og-image.png`, Astro.site).href;
 ---
+
 <!doctype html>
 <html lang="zh-CN">
   <head>
@@ -16,12 +35,19 @@ const base = import.meta.env.BASE_URL;
     <meta name="viewport" content="width=device-width" />
     <title>Unicode 符号选择器：搜索、复制与码点查询</title>
     <meta name="description" content="搜索、复制 Unicode 核心符号，并查看码点、UTF-8、HTML、CSS 与 JavaScript 编码。" />
-    <link rel="canonical" href="https://wangruofeng.github.io/unicode-picker/" />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href={`${base}sitemap.xml`} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content="Unicode 符号选择器" />
     <meta property="og:title" content="Unicode 符号选择器" />
-    <meta property="og:description" content="搜索、复制 Unicode 核心符号，并查看开发者编码格式。" />
-    <meta property="og:url" content="https://wangruofeng.github.io/unicode-picker/" />
+    <meta property="og:description" content="搜索、复制 Unicode 核心符号，并查看码点、UTF-8、HTML、CSS 与 JavaScript 编码。" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Unicode 符号选择器" />
+    <meta name="twitter:description" content="搜索、复制 Unicode 核心符号，并查看开发者编码。" />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#2563eb" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="manifest" href={`${base}manifest.webmanifest`} />
@@ -29,12 +55,14 @@ const base = import.meta.env.BASE_URL;
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       name: 'Unicode Symbol Picker',
+      alternateName: 'Unicode 符号选择器',
       description: 'Search and copy Unicode core symbols with developer encodings.',
-      url: 'https://wangruofeng.github.io/unicode-picker/',
+      url: canonical,
       applicationCategory: 'UtilitiesApplication',
       operatingSystem: 'Web',
       inLanguage: ['zh-CN', 'en'],
-      isAccessibleForFree: true
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
     })} />
   </head>
   <body class="picker-app">
@@ -49,6 +77,49 @@ const base = import.meta.env.BASE_URL;
     </div>
     <DetailModal />
     <div id="toast" role="status" aria-live="polite"></div>
+
+    {/* Crawlable index — visually hidden (the shell is a full-screen app)
+        but present in the DOM so search engines and assistive tech can read
+        the page heading and follow links into every static landing page. */}
+    <section class="sr-only" aria-label="站点导航">
+      <h1>Unicode 符号选择器</h1>
+      <p>
+        在线 Unicode 符号选择器，收录 Unicode {manifest.unicodeVersion} 核心符号共 {manifest.symbolCount} 个。
+        支持按名称、码点、关键词搜索，一键复制字符，并提供 UTF-8、HTML 十六进制/十进制实体、CSS content
+        转义与 JavaScript 转义等开发者编码。下方为全部分类与 Unicode 区段的索引页。
+      </p>
+
+      <h2>符号分类</h2>
+      <ul>
+        {categories.map((category) => (
+          <li>
+            <a href={`${base}category/${category.id}/`}>{category.names['zh-CN']}</a>
+            （{category.count} 个符号）
+          </li>
+        ))}
+      </ul>
+
+      <h2>Unicode 区段</h2>
+      <ul>
+        {blocks.map((block) => (
+          <li>
+            <a href={`${base}block/${block.slug}/`}>{block.name}</a>
+            （{block.count} 个符号）
+          </li>
+        ))}
+      </ul>
+
+      <h2>常用符号</h2>
+      <ul>
+        {featured.map((symbol) => (
+          <li>
+            <a href={`${base}symbol/${symbol.id}/`}>{symbol.nameZh || symbol.name}</a>
+            （{symbol.value}，{symbol.codePoints[0]}）
+          </li>
+        ))}
+      </ul>
+    </section>
+
     <script src="../client/app.ts"></script>
   </body>
 </html>

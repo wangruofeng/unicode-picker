@@ -8,6 +8,9 @@ export function getStaticPaths() {
 const { block } = Astro.props;
 const items = blockSymbols(block.slug);
 const base = import.meta.env.BASE_URL;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(`${base}og-image.png`, Astro.site).href;
+const description = `浏览 Unicode ${block.name} 区段中的 ${items.length} 个符号。`;
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -15,8 +18,18 @@ const base = import.meta.env.BASE_URL;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{block.name} · Unicode 符号选择器</title>
-    <meta name="description" content={`浏览 Unicode ${block.name} 区段中的 ${items.length} 个符号。`} />
-    <link rel="canonical" href={`https://wangruofeng.github.io/unicode-picker/block/${block.slug}/`} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Unicode 符号选择器" />
+    <meta property="og:title" content={`${block.name} · Unicode 符号选择器`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${block.name} · Unicode 符号选择器`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   </head>
   <body class="seo-page">
@@ -30,7 +43,7 @@ const base = import.meta.env.BASE_URL;
       <p class="seo-lede">该区段包含 {items.length} 个可复制的 Unicode 核心符号。</p>
       <div class="seo-symbol-list">
         {items.slice(0, 160).map((symbol) => (
-          <a class="seo-symbol" href={`${base}?symbol=${encodeURIComponent(symbol.codePoints[0])}`}>
+          <a class="seo-symbol" href={`${base}symbol/${symbol.id}/`}>
             <span class="symbol-char" aria-hidden="true">{symbol.value}</span>
             <span>{symbol.nameZh || symbol.name}</span>
             <code>{symbol.codePoints[0]}</code>

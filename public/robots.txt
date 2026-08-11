@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wangruofeng.github.io/unicode-picker/sitemap.xml
+Sitemap: https://blog.wangruofeng007.com/unicode-picker/sitemap.xml

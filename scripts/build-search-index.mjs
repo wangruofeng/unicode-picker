@@ -81,14 +81,17 @@ for (const [category, ids] of categories) await writeJson(`categories/${category
 for (const [block, data] of blocks) await writeJson(`blocks/${block}.json`, data);
 for (const [block, data] of detailByBlock) await writeJson(`details/${block}.json`, data);
 
-const SITE_ORIGIN = 'https://wangruofeng.github.io/unicode-picker';
-const sitemapUrls = [
+// Must match `site` + `base` in astro.config.mjs. Overridable via env so CI
+// can point the sitemap at a preview/staging origin without code changes.
+const SITE_ORIGIN = process.env.SITE_ORIGIN ?? 'https://blog.wangruofeng007.com/unicode-picker';
+const lastmod = generatedAt.split('T')[0];
+const sitemapEntries = [
   `${SITE_ORIGIN}/`,
   ...manifest.categories.map((category) => `${SITE_ORIGIN}/category/${category.id}/`),
   ...manifest.blocks.map((block) => `${SITE_ORIGIN}/block/${block.slug}/`),
-  ...manifest.featuredIds.map((id) => `${SITE_ORIGIN}/symbol/${id}/`)
+  ...catalog.map((symbol) => `${SITE_ORIGIN}/symbol/${symbol.id}/`)
 ];
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries.map((url) => `  <url><loc>${url}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(resolve(process.cwd(), 'public', 'sitemap.xml'), sitemap);
 
 console.log(`Built catalog, ${categories.size} category shards, ${blocks.size} block shards, and ${detailByBlock.size} detail shards`);

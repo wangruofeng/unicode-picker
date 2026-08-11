@@ -19,7 +19,10 @@ npm run data:build # 数据管线全流程（日常不需要，数据已提交�
 
 ## 架构事实（改代码前必读）
 
-- **路径规则（红线）**：站点部署在 GitHub Pages 子路径 `/unicode-symbol-picker/` 下。
+- **路径规则（红线）**：站点部署在子路径 `/unicode-picker/` 下。
+  canonical 域名是 `blog.wangruofeng007.com`（旧 `wangruofeng.github.io` 会 301 跳转过来），
+  由 `astro.config.mjs` 的 `site` 决定——canonical/og:url/JSON-LD/sitemap 一律从 `Astro.site`
+  派生，**禁止在模板里硬编码完整域名**。
   Astro 模板与 TS 代码中的 URL 一律用 `import.meta.env.BASE_URL` 拼接，
   **禁止硬编码根相对路径**（`/data/...` 在子路径下会 404）。
   `public/sw.js` 与 `public/manifest.webmanifest` 是静态文件，无法用 BASE_URL，
@@ -39,7 +42,7 @@ npm run data:build # 数据管线全流程（日常不需要，数据已提交�
 - **无障碍**：动画（如收藏按钮 `favorite-pop` / `favorite-unpop`）必须保留
   `prefers-reduced-motion` 降级；图标按钮必须带 `aria-label`。
 - **部署**：推送 `main` 触发 `.github/workflows/deploy.yml`，自动构建部署到
-  <https://wangruofeng.github.io/unicode-symbol-picker/>。
+  <https://blog.wangruofeng007.com/unicode-picker/>。
 
 ## 深入文档
 

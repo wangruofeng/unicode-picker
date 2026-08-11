@@ -1,41 +1,101 @@
 ---
 import '../../styles/global.css';
-import { readCatalog, readManifest, readSymbolDetail } from '../../lib/build-data';
-import type { CatalogSymbol, UnicodeSymbol } from '../../lib/types';
+import { readAllSymbols, readManifest } from '../../lib/build-data';
+import type { BlockMeta, CategoryMeta, CatalogSymbol, UnicodeSymbol } from '../../lib/types';
 
+// All symbols are pre-mapped here once (readAllSymbols is cached, so each
+// detail shard parses exactly once). Per-symbol data that would otherwise be
+// recomputed in every page's frontmatter — same-block neighbors, parent block
+// meta, category meta — is computed here and passed via props.
 export function getStaticPaths() {
-  const staticManifest = readManifest();
-  const staticCatalog = readCatalog();
-  const featuredSymbols = staticManifest.featuredIds
-    .map((id) => staticCatalog.find((item) => item.id === id))
-    .filter((item): item is CatalogSymbol => Boolean(item))
-    .map(readSymbolDetail);
-  return featuredSymbols.map((symbol) => ({ params: { codepoint: symbol.id }, props: { symbol } }));
+  const all = readAllSymbols();
+  const manifest = readManifest();
+
+  // Group siblings by block name, preserving catalog (= codepoint) order.
+  const siblingsByBlock = new Map<string, UnicodeSymbol[]>();
+  const posInBlock = new Map<string, number>();
+  for (const symbol of all) {
+    const list = siblingsByBlock.get(symbol.block);
+    if (list) {
+      list.push(symbol);
+    } else {
+      siblingsByBlock.set(symbol.block, [symbol]);
+    }
+    posInBlock.set(symbol.id, (siblingsByBlock.get(symbol.block)?.length ?? 1) - 1);
+  }
+
+  const blockByName = new Map(manifest.blocks.map((block) => [block.name, block]));
+
+  return all.map((symbol) => {
+    const siblings = siblingsByBlock.get(symbol.block) ?? [];
+    const i = posInBlock.get(symbol.id) ?? 0;
+    const related = [
+      ...siblings.slice(Math.max(0, i - 6), i),
+      ...siblings.slice(i + 1, i + 7)
+    ].slice(0, 12) as CatalogSymbol[];
+    const block = blockByName.get(symbol.block);
+    const categories = manifest.categories.filter((category) => symbol.categories.includes(category.id));
+    return { params: { codepoint: symbol.id }, props: { symbol, related, block, categories } };
+  });
 }
-const { symbol } = Astro.props as { symbol: UnicodeSymbol };
+
+interface Props {
+  symbol: UnicodeSymbol;
+  related: CatalogSymbol[];
+  block: BlockMeta | undefined;
+  categories: CategoryMeta[];
+}
+const { symbol, related, block, categories } = Astro.props as Props;
 const displayName = symbol.nameZh || symbol.name;
 const base = import.meta.env.BASE_URL;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(`${base}og-image.png`, Astro.site).href;
+const openerUrl = `${base}?symbol=${encodeURIComponent(symbol.codePoints[0])}`;
+const description = `${displayName}（${symbol.codePoints[0]}）的 Unicode、HTML、CSS 和 JavaScript 编码，所属区段 ${symbol.block}。`;
+const isEmptyGlyph = symbol.isInvisible || symbol.isCombining;
+const planeNames: Record<number, string> = {
+  0: 'BMP 基本多文种平面',
+  1: 'SMP 补充多文种平面',
+  2: 'SIP 补充表意平面',
+  3: 'TIP 第三表意平面',
+  14: 'SSP 特殊用途平面',
+  15: 'PUA 私用区 A',
+  16: 'PUA 私用区 B'
+};
+const planeName = planeNames[symbol.plane] ?? `Plane ${symbol.plane}`;
 ---
+
 <!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{displayName} {symbol.codePoints[0]} · Unicode 符号选择器</title>
-    <meta name="description" content={`${displayName}（${symbol.codePoints[0]}）的 Unicode、HTML、CSS 和 JavaScript 编码。`} />
-    <link rel="canonical" href={`https://wangruofeng.github.io/unicode-picker/symbol/${symbol.id}/`} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Unicode 符号选择器" />
+    <meta property="og:title" content={`${displayName} ${symbol.codePoints[0]}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${displayName} ${symbol.codePoints[0]}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   </head>
   <body class="seo-page">
     <header class="seo-header">
-      <a href="/" class="seo-brand"><span class="brand-mark" aria-hidden="true">✦</span>Unicode 符号选择器</a>
-      <a href={`/?symbol=${encodeURIComponent(symbol.codePoints[0])}`} class="seo-back">在选择器中打开 →</a>
+      <a href={base} class="seo-brand"><span class="brand-mark" aria-hidden="true">✦</span>Unicode 符号选择器</a>
+      <a href={openerUrl} class="seo-back">在选择器中打开 →</a>
     </header>
     <main class="seo-main symbol-detail-page">
-      <div class="symbol-hero-character symbol-char" aria-label={displayName}>{symbol.value}</div>
+      <div class="symbol-hero-character symbol-char" data-empty={isEmptyGlyph ? '' : undefined} aria-label={displayName}>{symbol.value}</div>
       <p class="seo-kicker">{symbol.codePoints[0]} / {symbol.block}</p>
       <h1>{displayName}</h1>
-      <p class="seo-lede">{symbol.name} · General Category {symbol.generalCategory} · Unicode {symbol.unicodeVersion}</p>
+      <p class="seo-lede">{symbol.name} · General Category {symbol.generalCategory} · Unicode {symbol.unicodeVersion}{isEmptyGlyph ? ' · 不可见/组合字符，需前置基字' : ''}</p>
+
       <div class="seo-code-table">
         <div><span>HTML hex</span><code>{symbol.htmlHex}</code></div>
         <div><span>HTML decimal</span><code>{symbol.htmlDecimal}</code></div>
@@ -43,6 +103,50 @@ const base = import.meta.env.BASE_URL;
         <div><span>JavaScript</span><code>{symbol.jsEscape}</code></div>
         <div><span>UTF-8</span><code>{symbol.utf8}</code></div>
       </div>
+
+      {(symbol.aliases.length > 0 || symbol.script) && (
+        <dl class="seo-properties">
+          {symbol.aliases.length > 0 && (
+            <div><dt>别名</dt><dd>{symbol.aliases.join('、')}</dd></div>
+          )}
+          {symbol.script && (
+            <div><dt>文字</dt><dd>{symbol.script}</dd></div>
+          )}
+          <div><dt>平面</dt><dd>{planeName}</dd></div>
+        </dl>
+      )}
+
+      <nav class="seo-breadcrumbs" aria-label="所属分类">
+        {block && (
+          <span class="crumb">
+            <span class="crumb-label">区段</span>
+            <a href={`${base}block/${block.slug}/`}>{block.name}</a>
+          </span>
+        )}
+        {categories.length > 0 && (
+          <span class="crumb">
+            <span class="crumb-label">分类</span>
+            {categories.map((category) => (
+              <a href={`${base}category/${category.id}/`}>{category.names['zh-CN']}</a>
+            ))}
+          </span>
+        )}
+      </nav>
+
+      {related.length > 0 && (
+        <section class="seo-related" aria-label="同区段相关符号">
+          <h2 class="seo-related-title">同区段符号</h2>
+          <div class="seo-symbol-list">
+            {related.map((item) => (
+              <a class="seo-symbol" href={`${base}symbol/${item.id}/`}>
+                <span class="symbol-char" aria-hidden="true">{item.value}</span>
+                <span>{item.nameZh || item.name}</span>
+                <code>{item.codePoints[0]}</code>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   </body>
 </html>

@@ -316,7 +316,7 @@ main { flex: 1; min-width: 0; overflow: auto; padding: 0 20px 60px; }
   padding: 18px 0 15px;
   background: var(--bg);
 }
-.results-heading h1 { margin: 0; color: var(--text); font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
+.results-heading h2 { margin: 0; color: var(--text); font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
 .results-heading p { max-width: 720px; margin: 5px 0 0; color: var(--text-muted); font-size: 12px; line-height: 1.5; }
 .symbol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 8px; margin-top: 4px; }
 .symbol-tile { position: relative; min-width: 0; }
@@ -487,6 +487,21 @@ body.modal-open { overflow: hidden; }
 @keyframes modal-fade { to { opacity: 1; } }
 @keyframes modal-pop { to { transform: translateY(0) scale(1); opacity: 1; } }
 
+/* Visually hidden but available to crawlers and screen readers. Used to
+   surface crawlable headings/internal links on the full-screen picker shell
+   without disturbing the app layout. Content is real DOM, not cloaked. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Static SEO surfaces */
 .seo-page { display: block; min-height: 100vh; }
 .seo-header { display: flex; align-items: center; justify-content: space-between; max-width: 1080px; margin: 0 auto; padding: 24px 24px 18px; }
@@ -509,6 +524,19 @@ body.modal-open { overflow: hidden; }
 .seo-code-table { display: grid; gap: 7px; max-width: 600px; }
 .seo-code-table > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; align-items: center; }
 .seo-code-table span { color: var(--text-muted); font-size: 12px; }
+.symbol-hero-character[data-empty] { color: var(--text-faint); border-style: dashed; background: repeating-linear-gradient(45deg, var(--panel), var(--panel) 8px, var(--bg) 8px, var(--bg) 16px); }
+.seo-properties { display: grid; gap: 6px; max-width: 600px; margin: 24px 0 0; }
+.seo-properties > div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; align-items: baseline; }
+.seo-properties dt { color: var(--text-muted); font-size: 12px; }
+.seo-properties dd { margin: 0; color: var(--text); font-size: 13px; line-height: 1.6; }
+.seo-breadcrumbs { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--border); }
+.seo-breadcrumbs .crumb { display: inline-flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.seo-breadcrumbs .crumb-label { color: var(--text-faint); font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.seo-breadcrumbs a { color: var(--accent); font-size: 13px; text-decoration: none; }
+.seo-breadcrumbs a:hover { text-decoration: underline; }
+.seo-related { margin-top: 44px; }
+.seo-related-title { margin: 0 0 14px; color: var(--text); font-size: 15px; font-weight: 650; }
+.symbol-detail-page .seo-symbol-list { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 
 @media (max-width: 900px) {
   .detail-panel { width: 330px; }
