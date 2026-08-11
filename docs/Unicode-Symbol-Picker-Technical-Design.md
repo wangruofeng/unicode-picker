@@ -1,18 +1,18 @@
-# Unicode 符号选择器技术方案
+# Unicode Picker 技术方案
 
 > 参考项目：[wangruofeng/emoji-picker](https://github.com/wangruofeng/emoji-picker)
 >
-> 推荐项目名：unicode-symbol-picker
+> 项目名：unicode-picker
 >
 > Unicode 数据版本：17.0.0
 
 ## 1. 方案结论
 
-建议新建独立项目 unicode-symbol-picker，复用 emoji-picker 的产品体验和视觉体系，但不继续采用“单个 HTML 内嵌全部数据”的实现。
+建议新建独立项目 unicode-picker，复用 emoji-picker 的产品体验和视觉体系，但不继续采用“单个 HTML 内嵌全部数据”的实现。
 
 推荐架构：
 
-> Astro 静态站点 + 原生 TypeScript 交互模块 + 构建期 Unicode 数据生成 + Cloudflare Pages + PWA
+> Astro 静态站点 + 原生 TypeScript 交互模块 + 构建期 Unicode 数据生成 + GitHub Pages + PWA
 
 不需要后端和数据库，也不需要 React 运行时。
 
@@ -136,7 +136,7 @@ emoji-picker.wangruofeng007.com
 ## 6. 项目目录
 
 ~~~text
-unicode-symbol-picker/
+unicode-picker/
 ├── public/
 │   ├── data/
 │   │   └── 17.0.0/
@@ -628,7 +628,7 @@ unicode-picker:settings
 
 ## 19. 最终建议
 
-保留 emoji-picker 作为轻量 Emoji 专用工具，新建 unicode-symbol-picker。两者共享设计语言和交互习惯，但 Unicode 项目采用可生成、可分片、可升级的数据架构。
+保留 emoji-picker 作为轻量 Emoji 专用工具，新建 unicode-picker。两者共享设计语言和交互习惯，但 Unicode 项目采用可生成、可分片、可升级的数据架构。
 
 这样后续 Unicode 18 发布时，只需升级数据版本并重新构建，不需要手动维护数千条符号。
 

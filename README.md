@@ -1,8 +1,8 @@
-# Unicode 符号选择器
+# Unicode Picker
 
 > 搜索、复制 Unicode 核心符号，并查看码点、UTF-8、HTML、CSS 与 JavaScript 编码。
 
-🌐 **在线演示**：<https://wangruofeng.github.io/unicode-symbol-picker/>
+🌐 **在线演示**：<https://wangruofeng.github.io/unicode-picker/>
 
 基于 Unicode 17.0.0 的纯前端符号选择器：Astro 静态站点 + 原生 TypeScript，无后端、无运行时框架。
 
@@ -57,7 +57,7 @@ npm run data:build      # 以上四步的完整流水线
 
 - 推送到 `main` 分支即触发 `.github/workflows/deploy.yml`，自动构建并部署。
 - 仓库 Settings → Pages → Source 设为 **GitHub Actions**。
-- 站点地址为 <https://wangruofeng.github.io/unicode-symbol-picker/>。 
+- 站点地址为 <https://wangruofeng.github.io/unicode-picker/>。
 
 ## License
 

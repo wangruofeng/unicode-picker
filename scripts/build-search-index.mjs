@@ -81,7 +81,7 @@ for (const [category, ids] of categories) await writeJson(`categories/${category
 for (const [block, data] of blocks) await writeJson(`blocks/${block}.json`, data);
 for (const [block, data] of detailByBlock) await writeJson(`details/${block}.json`, data);
 
-const SITE_ORIGIN = 'https://wangruofeng.github.io/unicode-symbol-picker';
+const SITE_ORIGIN = 'https://wangruofeng.github.io/unicode-picker';
 const sitemapUrls = [
   `${SITE_ORIGIN}/`,
   ...manifest.categories.map((category) => `${SITE_ORIGIN}/category/${category.id}/`),

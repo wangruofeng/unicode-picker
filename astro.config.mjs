@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://wangruofeng.github.io',
-  base: '/unicode-symbol-picker/',
+  base: '/unicode-picker/',
   output: 'static',
   build: {
     format: 'directory'

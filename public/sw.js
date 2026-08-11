@@ -1,7 +1,7 @@
 const VERSION = '17.0.0';
 const CACHE_NAME = `unicode-picker-${VERSION}-v1`;
 // Relative URLs resolve against the service worker's own script URL, which lives
-// at the deployment base (e.g. /unicode-symbol-picker/sw.js). This keeps the
+// at the deployment base (e.g. /unicode-picker/sw.js). This keeps the
 // shell cache correct under any base path, including GitHub Pages subpaths.
 const SHELL = ['./', './manifest.webmanifest', './favicon.svg'];
 
@@ -19,7 +19,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   // Match versioned data shards anywhere under the base path (e.g.
-  // /unicode-symbol-picker/data/17.0.0/...), not only at the origin root.
+  // /unicode-picker/data/17.0.0/...), not only at the origin root.
   const isVersionedData = url.pathname.includes(`/data/${VERSION}/`);
   if (isVersionedData) {
     event.respondWith(caches.open(CACHE_NAME).then(async (cache) => {
