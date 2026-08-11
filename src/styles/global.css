@@ -374,7 +374,7 @@ main { flex: 1; min-width: 0; overflow: auto; padding: 0 20px 60px; }
 .alias-list { color: var(--text-muted); font-size: 11px; line-height: 1.5; }
 .alias-list strong { width: 100%; color: var(--text); font-size: 11px; }
 .detail-warning { margin-bottom: 14px; padding: 9px 10px; border: 1px solid color-mix(in srgb, var(--star) 45%, var(--border)); border-radius: 7px; color: var(--text-muted); background: color-mix(in srgb, var(--star) 10%, var(--panel)); font-size: 11px; line-height: 1.5; }
-.emoji-link { display: flex; gap: 8px; align-items: flex-start; margin-top: 20px; padding: 11px 12px; border: 1px solid color-mix(in srgb, var(--purple) 35%, var(--border)); border-radius: 8px; background: color-mix(in srgb, var(--purple) 7%, var(--panel)); }
+.emoji-link { display: flex; gap: 8px; align-items: center; margin-top: 20px; padding: 11px 12px; border: 1px solid color-mix(in srgb, var(--purple) 35%, var(--border)); border-radius: 8px; background: color-mix(in srgb, var(--purple) 7%, var(--panel)); }
 .emoji-link-mark { color: var(--purple); }
 .emoji-link a { color: var(--purple); font-size: 11px; line-height: 1.5; text-decoration: none; }
 .emoji-link a:hover { text-decoration: underline; }
