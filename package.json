@@ -16,10 +16,10 @@
     "data:build": "npm run data:download && npm run data:parse && npm run data:index && npm run data:validate"
   },
   "dependencies": {
-    "astro": "^5.13.5"
+    "astro": "^7.2.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.10",
     "@types/node": "^24.3.0",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2"

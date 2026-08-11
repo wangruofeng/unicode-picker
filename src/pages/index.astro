@@ -5,6 +5,7 @@ import SearchBar from '../components/SearchBar.astro';
 import CategoryTabs from '../components/CategoryTabs.astro';
 import SymbolGrid from '../components/SymbolGrid.astro';
 import DetailPanel from '../components/DetailPanel.astro';
+import DetailModal from '../components/DetailModal.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -46,6 +47,7 @@ const base = import.meta.env.BASE_URL;
       </main>
       <DetailPanel />
     </div>
+    <DetailModal />
     <div id="toast" role="status" aria-live="polite"></div>
     <script src="../client/app.ts"></script>
   </body>

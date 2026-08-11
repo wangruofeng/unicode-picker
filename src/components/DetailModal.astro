@@ -1,0 +1,46 @@
+<div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalCharName" hidden>
+  <div class="detail-modal-backdrop" data-modal-close></div>
+  <div class="detail-modal-dialog" role="document">
+    <button class="detail-modal-close" id="detailModalClose" type="button" data-modal-close data-i18n-title="closeModal" data-i18n-aria="closeModal" title="关闭" aria-label="关闭"><span aria-hidden="true">×</span></button>
+    <div class="detail-modal-scroll">
+      <div class="modal-hero">
+        <div class="modal-character-wrap">
+          <div id="modalChar" class="modal-character" aria-hidden="true"></div>
+          <button id="modalFavorite" class="detail-favorite modal-favorite" type="button" data-i18n-title="favorite" aria-label="收藏">☆</button>
+        </div>
+        <div class="modal-heading">
+          <h2 id="modalCharName">—</h2>
+          <p id="modalCharNameEn">—</p>
+          <div id="modalWarning" class="detail-warning" hidden></div>
+        </div>
+      </div>
+      <div class="modal-grid">
+        <section class="detail-section">
+          <h3 data-i18n="encoding">编码信息</h3>
+          <div class="detail-row"><span data-i18n="unicode">Unicode</span><code id="modalCodePoint">—</code><button type="button" class="copy-mini" data-copy-target="modalCodePoint" data-i18n-title="copyUnicode" aria-label="复制 Unicode">⧉</button></div>
+          <div class="detail-row"><span data-i18n="decimal">十进制</span><code id="modalDecimal">—</code><button type="button" class="copy-mini" data-copy-target="modalDecimal" data-i18n-title="copyUnicode" aria-label="复制十进制编码">⧉</button></div>
+          <div class="detail-row"><span data-i18n="utf8">UTF-8</span><code id="modalUtf8">—</code><button type="button" class="copy-mini" data-copy-target="modalUtf8" data-i18n-title="copyUtf8" aria-label="复制 UTF-8">⧉</button></div>
+          <div class="detail-row"><span data-i18n="htmlHex">HTML 十六进制</span><code id="modalHtmlHex">—</code><button type="button" class="copy-mini" data-copy-target="modalHtmlHex" data-i18n-title="copyHtml" aria-label="复制 HTML">⧉</button></div>
+          <div class="detail-row"><span data-i18n="htmlDecimal">HTML 十进制</span><code id="modalHtmlDecimal">—</code><button type="button" class="copy-mini" data-copy-target="modalHtmlDecimal" data-i18n-title="copyHtml" aria-label="复制 HTML">⧉</button></div>
+          <div class="detail-row"><span data-i18n="css">CSS content</span><code id="modalCss">—</code><button type="button" class="copy-mini" data-copy-target="modalCss" data-i18n-title="copyCss" aria-label="复制 CSS">⧉</button></div>
+          <div class="detail-row"><span data-i18n="javascript">JavaScript</span><code id="modalJs">—</code><button type="button" class="copy-mini" data-copy-target="modalJs" data-i18n-title="copyJs" aria-label="复制 JavaScript">⧉</button></div>
+        </section>
+        <section class="detail-section">
+          <h3 data-i18n="properties">Unicode 属性</h3>
+          <dl class="property-list">
+            <div><dt data-i18n="generalCategory">General Category</dt><dd id="modalGeneralCategory">—</dd></div>
+            <div><dt data-i18n="block">区段</dt><dd id="modalBlock">—</dd></div>
+            <div><dt data-i18n="script">文字</dt><dd id="modalScript">—</dd></div>
+            <div><dt data-i18n="plane">平面</dt><dd id="modalPlane">—</dd></div>
+            <div><dt data-i18n="age">加入版本</dt><dd id="modalAge">—</dd></div>
+          </dl>
+          <div id="modalCategories" class="tag-list"></div>
+          <div id="modalAliases" class="alias-list" hidden></div>
+        </section>
+      </div>
+      <div class="modal-actions">
+        <button id="modalShare" type="button" class="secondary-button" data-i18n="share">复制分享链接</button>
+      </div>
+    </div>
+  </div>
+</div>

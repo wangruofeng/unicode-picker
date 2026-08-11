@@ -1,6 +1,6 @@
 <aside class="detail-panel hidden" id="detailPanel" aria-label="Symbol details">
   <div class="detail-header">
-    <div id="detailChar" class="detail-character" aria-label="Selected symbol"></div>
+    <div id="detailChar" class="detail-character" data-zoom-detail role="button" tabindex="0" aria-label="Selected symbol"></div>
     <div class="detail-heading">
       <h2 id="detailName">—</h2>
       <p id="detailNameEn">—</p>
@@ -20,14 +20,17 @@
       <div class="detail-row"><span data-i18n="css">CSS content</span><code id="detailCss">—</code><button type="button" class="copy-mini" data-copy-target="detailCss" data-i18n-title="copyCss" aria-label="复制 CSS">⧉</button></div>
       <div class="detail-row"><span data-i18n="javascript">JavaScript</span><code id="detailJs">—</code><button type="button" class="copy-mini" data-copy-target="detailJs" data-i18n-title="copyJs" aria-label="复制 JavaScript">⧉</button></div>
     </div>
-    <div class="detail-section">
-      <h3 data-i18n="properties">Unicode 属性</h3>
+    <div class="detail-section property-section">
+      <div class="section-title-row">
+        <h3 data-i18n="properties">Unicode 属性</h3>
+        <button class="zoom-hint" type="button" data-zoom-detail data-i18n-title="zoomDetail" data-i18n-aria="zoomDetail" title="点击放大查看" aria-label="点击放大查看">⤢</button>
+      </div>
       <dl class="property-list">
-        <div><dt data-i18n="generalCategory">General Category</dt><dd id="detailGeneralCategory">—</dd></div>
-        <div><dt data-i18n="block">区段</dt><dd id="detailBlock">—</dd></div>
-        <div><dt data-i18n="script">文字</dt><dd id="detailScript">—</dd></div>
-        <div><dt data-i18n="plane">平面</dt><dd id="detailPlane">—</dd></div>
-        <div><dt data-i18n="age">加入版本</dt><dd id="detailAge">—</dd></div>
+        <div class="property-zoom" data-zoom-detail role="button" tabindex="0"><dt data-i18n="generalCategory">General Category</dt><dd id="detailGeneralCategory">—</dd></div>
+        <div class="property-zoom" data-zoom-detail role="button" tabindex="0"><dt data-i18n="block">区段</dt><dd id="detailBlock">—</dd></div>
+        <div class="property-zoom" data-zoom-detail role="button" tabindex="0"><dt data-i18n="script">文字</dt><dd id="detailScript">—</dd></div>
+        <div class="property-zoom" data-zoom-detail role="button" tabindex="0"><dt data-i18n="plane">平面</dt><dd id="detailPlane">—</dd></div>
+        <div class="property-zoom" data-zoom-detail role="button" tabindex="0"><dt data-i18n="age">加入版本</dt><dd id="detailAge">—</dd></div>
       </dl>
       <div id="detailCategories" class="tag-list"></div>
       <div id="detailAliases" class="alias-list" hidden></div>

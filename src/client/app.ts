@@ -27,11 +27,14 @@ const contentDescription = getElement<HTMLParagraphElement>('contentDescription'
 const symbolGrid = getElement<HTMLDivElement>('symbolGrid');
 const emptyState = getElement<HTMLDivElement>('emptyState');
 const loadMoreButton = getElement<HTMLButtonElement>('loadMore');
+const loadMoreSentinel = getElement<HTMLDivElement>('loadMoreSentinel');
 const detailPanel = getElement<HTMLElement>('detailPanel');
 const toast = getElement<HTMLDivElement>('toast');
 const langBtn = getElement<HTMLButtonElement>('langBtn');
 const langMenu = getElement<HTMLDivElement>('langMenu');
 const themeBtn = getElement<HTMLButtonElement>('themeBtn');
+const detailModal = getElement<HTMLElement>('detailModal');
+const modalFavorite = getElement<HTMLButtonElement>('modalFavorite');
 
 const state: {
   lang: Language;
@@ -64,6 +67,7 @@ const state: {
 };
 
 let toastTimer: number | undefined;
+let lastFocused: HTMLElement | null = null;
 
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
 const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
@@ -144,6 +148,7 @@ async function setLanguage(language: Language): Promise<void> {
   renderTabs();
   renderContent();
   if (state.currentDetail) renderDetail(state.currentDetail);
+  if (!detailModal.hidden && state.currentDetail) renderDetailModal(state.currentDetail);
 }
 
 function readUrlState(): string | null {
@@ -262,6 +267,12 @@ function renderContent(): void {
 
   loadMoreButton.textContent = t('loadMore');
   loadMoreButton.hidden = items.length <= state.visibleCount;
+}
+
+function loadNextPage(): void {
+  if (state.visibleCount >= state.currentItems.length) return;
+  state.visibleCount += 240;
+  renderContent();
 }
 
 function tileTooltip(symbol: CatalogSymbol): string {
@@ -395,6 +406,77 @@ function renderDetail(detail: UnicodeSymbol): void {
   detailPanel.classList.remove('hidden');
 }
 
+function copyFromButton(button: HTMLButtonElement): void {
+  const target = document.getElementById(button.dataset.copyTarget ?? '');
+  if (target) void copyText(target.textContent ?? '').then((copied) => copied && showToast(t('copiedShort')));
+}
+
+function renderDetailModal(detail: UnicodeSymbol): void {
+  getElement<HTMLDivElement>('modalChar').textContent = detail.value;
+  setDetailText('modalCharName', displayName(detail));
+  setDetailText('modalCharNameEn', detail.name);
+  getElement<HTMLElement>('modalCharNameEn').hidden = state.lang === 'zh-CN' && Boolean(detail.nameZh);
+  setDetailText('modalCodePoint', detail.codePoints.join(' '));
+  setDetailText('modalDecimal', Array.from(detail.value).map((character) => String(character.codePointAt(0) ?? 0)).join(' '));
+  setDetailText('modalUtf8', detail.utf8);
+  setDetailText('modalHtmlHex', detail.htmlHex);
+  setDetailText('modalHtmlDecimal', detail.htmlDecimal);
+  setDetailText('modalCss', detail.cssEscape);
+  setDetailText('modalJs', detail.jsEscape);
+  setDetailText('modalGeneralCategory', detail.generalCategory);
+  setDetailText('modalBlock', detail.block);
+  setDetailText('modalScript', detail.script);
+  setDetailText('modalPlane', String(detail.plane));
+  setDetailText('modalAge', detail.unicodeVersion);
+
+  const warning = getElement<HTMLDivElement>('modalWarning');
+  warning.hidden = !(detail.isInvisible || detail.isCombining);
+  warning.textContent = t('invisibleWarning');
+
+  const tags = getElement<HTMLDivElement>('modalCategories');
+  tags.replaceChildren();
+  for (const category of detail.categories) {
+    const tag = document.createElement('span');
+    tag.className = 'detail-tag';
+    tag.textContent = categoryName(category);
+    tags.append(tag);
+  }
+
+  const aliases = getElement<HTMLDivElement>('modalAliases');
+  aliases.replaceChildren();
+  aliases.hidden = detail.aliases.length === 0;
+  if (detail.aliases.length > 0) {
+    const label = document.createElement('strong');
+    label.textContent = t('aliases');
+    aliases.append(label, document.createTextNode(detail.aliases.join(' · ')));
+  }
+
+  const isFavorite = state.favorites.has(detail.id);
+  modalFavorite.classList.toggle('active', isFavorite);
+  modalFavorite.textContent = isFavorite ? '★' : '☆';
+  modalFavorite.title = t(isFavorite ? 'unfavorite' : 'favorite');
+  modalFavorite.setAttribute('aria-label', t(isFavorite ? 'unfavorite' : 'favorite'));
+}
+
+function openDetailModal(): void {
+  if (!state.currentDetail || !detailModal.hidden) return;
+  renderDetailModal(state.currentDetail);
+  lastFocused = document.activeElement as HTMLElement | null;
+  detailModal.hidden = false;
+  document.body.classList.add('modal-open');
+  getElement<HTMLButtonElement>('detailModalClose').focus();
+}
+
+function closeDetailModal(): void {
+  if (detailModal.hidden) return;
+  detailModal.hidden = true;
+  document.body.classList.remove('modal-open');
+  if (lastFocused && lastFocused.isConnected && lastFocused.offsetParent !== null) {
+    lastFocused.focus();
+  }
+  lastFocused = null;
+}
+
 async function selectSymbol(id: string, { copy = true, updateHistory = true } = {}): Promise<void> {
   const symbol = state.catalog.find((item) => item.id === id);
   if (!symbol) return;
@@ -430,7 +512,10 @@ function toggleFavorite(id: string): void {
   else state.favorites.add(id);
   writeList(FAVORITES_KEY, [...state.favorites], 100);
   renderContent();
-  if (state.currentDetail?.id === id) renderDetail(state.currentDetail);
+  if (state.currentDetail?.id === id) {
+    renderDetail(state.currentDetail);
+    if (!detailModal.hidden) renderDetailModal(state.currentDetail);
+  }
 }
 
 function showToast(message: string): void {
@@ -488,14 +573,18 @@ function bindEvents(): void {
     const symbolId = (event.target as HTMLElement).closest<HTMLElement>('[data-symbol-id]')?.dataset.symbolId;
     if (symbolId) void selectSymbol(symbolId);
   });
-  loadMoreButton.addEventListener('click', () => {
-    state.visibleCount += 240;
-    renderContent();
-  });
+  loadMoreButton.addEventListener('click', loadNextPage);
+  const autoLoadObserver = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) loadNextPage();
+  }, { rootMargin: '360px 0px' });
+  autoLoadObserver.observe(loadMoreSentinel);
   getElement<HTMLButtonElement>('detailFavorite').addEventListener('click', () => {
     if (state.selectedId) toggleFavorite(state.selectedId);
   });
   getElement<HTMLButtonElement>('detailClose').addEventListener('click', () => {
+    detailModal.hidden = true;
+    document.body.classList.remove('modal-open');
+    lastFocused = null;
     detailPanel.classList.add('hidden');
     state.selectedId = null;
     state.currentDetail = null;
@@ -503,12 +592,24 @@ function bindEvents(): void {
     renderContent();
   });
   detailPanel.addEventListener('click', (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-copy-target]');
-    if (!button) return;
-    const target = document.getElementById(button.dataset.copyTarget ?? '');
-    if (target) void copyText(target.textContent ?? '').then((copied) => copied && showToast(t('copiedShort')));
+    const target = event.target as HTMLElement;
+    const copyButton = target.closest<HTMLButtonElement>('[data-copy-target]');
+    if (copyButton) { copyFromButton(copyButton); return; }
+    if (target.closest('[data-zoom-detail]')) openDetailModal();
+  });
+  detailModal.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('[data-modal-close]')) { closeDetailModal(); return; }
+    const copyButton = target.closest<HTMLButtonElement>('[data-copy-target]');
+    if (copyButton) copyFromButton(copyButton);
   });
   getElement<HTMLButtonElement>('shareButton').addEventListener('click', () => {
+    void copyText(window.location.href).then((copied) => copied && showToast(t('copiedShort')));
+  });
+  modalFavorite.addEventListener('click', () => {
+    if (state.selectedId) toggleFavorite(state.selectedId);
+  });
+  getElement<HTMLButtonElement>('modalShare').addEventListener('click', () => {
     void copyText(window.location.href).then((copied) => copied && showToast(t('copiedShort')));
   });
   langBtn.addEventListener('click', (event) => {
@@ -524,12 +625,9 @@ function bindEvents(): void {
     applyTheme(next);
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === '/' && document.activeElement !== searchInput) {
-      event.preventDefault();
-      searchInput.focus();
-    }
     if (event.key === 'Escape') {
-      if (langMenu.classList.contains('show')) langMenu.classList.remove('show');
+      if (!detailModal.hidden) closeDetailModal();
+      else if (langMenu.classList.contains('show')) langMenu.classList.remove('show');
       else if (state.query) {
         state.query = '';
         searchInput.value = '';
@@ -539,6 +637,26 @@ function bindEvents(): void {
       } else if (!detailPanel.classList.contains('hidden')) {
         getElement<HTMLButtonElement>('detailClose').click();
       }
+      return;
+    }
+    if (event.key === '/' && document.activeElement !== searchInput) {
+      event.preventDefault();
+      searchInput.focus();
+      return;
+    }
+    if (!detailModal.hidden && event.key === 'Tab') {
+      const focusables = Array.from(detailModal.querySelectorAll<HTMLElement>('button, [href], [tabindex="0"]')).filter((el) => el.offsetParent !== null);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (event.shiftKey && active === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && active === last) { event.preventDefault(); first.focus(); }
+      return;
+    }
+    if ((event.key === 'Enter' || event.key === ' ') && (event.target as HTMLElement)?.closest('[data-zoom-detail]')) {
+      event.preventDefault();
+      openDetailModal();
     }
   });
 }
