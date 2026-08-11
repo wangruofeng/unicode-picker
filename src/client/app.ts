@@ -4,7 +4,7 @@ import { cssEscape, htmlDecimal, htmlHex, jsEscape, utf8 } from '../lib/encoding
 import { detectLanguage, LANGUAGES, translate } from '../lib/i18n';
 import { searchSymbols } from '../lib/search';
 import { readList, readValue, writeList, writeValue } from '../lib/storage';
-import { categoryLabel } from '../lib/taxonomy';
+import { categoryLabel, filterSymbolsByCategory, isVirtualCategory, VIRTUAL_CATEGORY_IDS } from '../lib/taxonomy';
 import type { CatalogSymbol, Language, UnicodeManifest, UnicodeSymbol } from '../lib/types';
 
 const FAVORITES_KEY = 'unicode-picker:favorites';
@@ -183,7 +183,7 @@ function categoryName(id: string): string {
 
 function renderTabs(): void {
   categoryTabs.replaceChildren();
-  const categoryIds = ['all', 'recent', 'favorites', ...(state.manifest?.categories.map((category) => category.id) ?? [])];
+  const categoryIds = [...VIRTUAL_CATEGORY_IDS, ...(state.manifest?.categories.map((category) => category.id) ?? [])];
   for (const id of categoryIds) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -204,8 +204,7 @@ function baseItems(): CatalogSymbol[] {
   if (state.activeCategory === 'recent') return idsToSymbols(state.recent);
   if (state.activeCategory === 'favorites') return idsToSymbols([...state.favorites]);
   if (state.activeCategory === 'popular') return idsToSymbols(state.manifest?.featuredIds ?? []);
-  if (state.activeCategory === 'all') return state.catalog;
-  return state.catalog.filter((symbol) => symbol.categories.includes(state.activeCategory));
+  return filterSymbolsByCategory(state.catalog, state.activeCategory);
 }
 
 function filteredItems(): CatalogSymbol[] {
@@ -701,7 +700,7 @@ async function init(): Promise<void> {
     const [manifest, catalog] = await Promise.all([loadManifest(), loadCatalog(state.lang)]);
     state.manifest = manifest;
     state.catalog = catalog;
-    if (!state.manifest.categories.some((category) => category.id === state.activeCategory) && !['all', 'recent', 'favorites', 'popular'].includes(state.activeCategory)) state.activeCategory = 'popular';
+    if (!state.manifest.categories.some((category) => category.id === state.activeCategory) && !isVirtualCategory(state.activeCategory)) state.activeCategory = 'popular';
     renderTabs();
     renderContent();
     if (pendingSymbol) {
