@@ -8,7 +8,7 @@
 
 ## 特性
 
-- **9473 个符号** —— 覆盖 Unicode 17.0.0 标点、货币、数学、箭头、几何、装饰、星座、棋类、音乐等核心区段
+- **9555 个符号** —— 覆盖 Unicode 17.0.0 标点、货币、数学、箭头、几何、装饰、带圈与括号数字、星座、棋类、音乐等核心区段
 - **中英双语** —— 简体中文 / English 一键切换，搜索同时匹配字符、码点、中英文名称与关键词
 - **一键复制** —— 点击符号即复制到剪贴板，悬浮显示名称与码点
 - **完整编码** —— Unicode 码点、十进制、UTF-8、HTML（十六进制/十进制）、CSS content、JavaScript 转义
@@ -46,7 +46,7 @@ npm run preview    # 本地预览构建产物
 npm run data:download   # 下载 Unicode 17.0.0 UCD 原始数据到 data/ucd/
 npm run data:parse      # 解析 UCD，生成 data/generated/symbols.json（含中文名）
 npm run data:index      # 生成 catalog / 分类 / 区段 / 详情 / sitemap 分片到 public/data/
-npm run data:validate   # 校验数据完整性（9473 条记录）
+npm run data:validate   # 校验数据完整性（9555 条记录）
 npm run data:build      # 以上四步的完整流水线
 ```
 

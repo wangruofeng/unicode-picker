@@ -10,10 +10,25 @@ const catalog = JSON.parse(readFileSync(resolve(root, 'catalog.en.json'), 'utf8'
 const catalogZh = JSON.parse(readFileSync(resolve(root, 'catalog.zh-CN.json'), 'utf8')) as CatalogSymbol[];
 
 test('generated catalog matches the Unicode 17.0 MVP contract', () => {
-  assert.equal(manifest.symbolCount, 9473);
-  assert.equal(catalog.length, 9473);
+  assert.equal(manifest.symbolCount, 9555);
+  assert.equal(catalog.length, 9555);
   assert.equal(new Set(catalog.map((symbol) => symbol.id)).size, catalog.length);
   assert.ok(catalog.every((symbol) => symbol.value && symbol.block && symbol.categories.length > 0));
+});
+
+test('generated catalog includes enclosed alphanumeric symbols', () => {
+  const circledOne = catalog.find((symbol) => symbol.id === 'u-2460');
+  assert.deepEqual(circledOne && {
+    value: circledOne.value,
+    block: circledOne.block,
+    generalCategory: circledOne.generalCategory,
+    categories: circledOne.categories
+  }, {
+    value: '①',
+    block: 'Enclosed Alphanumerics',
+    generalCategory: 'No',
+    categories: ['circles']
+  });
 });
 
 test('generated code points round-trip to their characters', () => {

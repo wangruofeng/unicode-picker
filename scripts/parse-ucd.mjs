@@ -4,10 +4,13 @@ import { classifySymbol } from './classify-symbols.mjs';
 import { getChineseName } from './name-zh.mjs';
 
 const VERSION = process.env.UNICODE_VERSION ?? '17.0.0';
-const EXPECTED_COUNT = 9473;
+const EXPECTED_COUNT = 9555;
 const root = resolve(process.cwd(), 'data', 'ucd', VERSION, 'raw');
 const outputDir = resolve(process.cwd(), 'data', 'generated');
 const ALLOWED_CATEGORIES = new Set(['Sm', 'Sc', 'Sk', 'So', 'Pc', 'Pd', 'Ps', 'Pe', 'Pi', 'Pf', 'Po']);
+// Other-number characters are normally excluded, but these enclosed forms are
+// commonly used as symbols for lists, labels, and shortcuts.
+const INCLUDED_NUMBER_BLOCKS = new Set(['Enclosed Alphanumerics']);
 
 const sourcePath = (name) => join(root, name);
 
@@ -88,7 +91,12 @@ function productKeywords(name, nameZh, aliases, block) {
   return [...new Set([...words, ...aliasWords, block.toLowerCase(), ...(nameZh ? [nameZh] : [])])];
 }
 
-function parseUnicodeData(lines) {
+function isIncluded(generalCategory, codePoint, blocks) {
+  return ALLOWED_CATEGORIES.has(generalCategory)
+    || (generalCategory === 'No' && INCLUDED_NUMBER_BLOCKS.has(valueFor(blocks, codePoint, 'No_Block')));
+}
+
+function parseUnicodeData(lines, blocks) {
   const records = [];
   let rangeStart = null;
   for (const line of lines) {
@@ -103,7 +111,7 @@ function parseUnicodeData(lines) {
       continue;
     }
     if (name.endsWith(', Last>')) {
-      if (rangeStart && ALLOWED_CATEGORIES.has(rangeStart.generalCategory)) {
+      if (rangeStart && isIncluded(rangeStart.generalCategory, rangeStart.codePoint, blocks)) {
         for (let value = rangeStart.codePoint; value <= codePoint; value += 1) {
           records.push({ codePoint: value, name: rangeStart.name.replace(', First>', '').replace(/^<|>$/g, ''), generalCategory: rangeStart.generalCategory, combiningClass: rangeStart.combiningClass });
         }
@@ -111,7 +119,7 @@ function parseUnicodeData(lines) {
       rangeStart = null;
       continue;
     }
-    if (!ALLOWED_CATEGORIES.has(generalCategory) || name.startsWith('<')) continue;
+    if (!isIncluded(generalCategory, codePoint, blocks) || name.startsWith('<')) continue;
     records.push({ codePoint, name, generalCategory, combiningClass });
   }
   return records;
@@ -132,8 +140,8 @@ function parseAliases(lines) {
 }
 
 const symbolsText = await linesAt(sourcePath('UnicodeData.txt'));
-const symbols = parseUnicodeData(symbolsText);
 const blocks = parsePropertyRanges(await linesAt(sourcePath('Blocks.txt')));
+const symbols = parseUnicodeData(symbolsText, blocks);
 const scripts = parsePropertyRanges(await linesAt(sourcePath('Scripts.txt')));
 const ages = parsePropertyRanges(await linesAt(sourcePath('DerivedAge.txt')));
 const emoji = setFromRanges(parsePropertyRanges(await linesAt(sourcePath('emoji/emoji-data.txt')), { property: 'Emoji' }));

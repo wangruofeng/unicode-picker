@@ -38,7 +38,7 @@
 - 收藏查询会重复构建 Map
 - Emoji 数据、UI、搜索、编码逻辑耦合在一个文件里
 
-Unicode 符号首版预计包含 9,473 个 S* + P* 符号码点，继续内嵌会让 HTML 更大，因此需要拆分数据层。
+Unicode 符号首版包含 9,555 个 S* + P* 符号码点，以及 `Enclosed Alphanumerics` 区块内常作列表与标签符号使用的 `No` 字符；继续内嵌会让 HTML 更大，因此需要拆分数据层。
 
 另外，现有详情复制逻辑存在一个迁移时应修正的问题：
 
@@ -104,7 +104,7 @@ Pf  后置引号
 Po  其他标点
 ~~~
 
-共约 9,473 个码点，数据来自 [Unicode Character Database 17.0](https://www.unicode.org/Public/17.0.0/ucd/)。
+另纳入 `Enclosed Alphanumerics` 区块内的 82 个 `No`（Other Number）字符，包括带圈和括号数字；共 9,555 个码点，数据来自 [Unicode Character Database 17.0](https://www.unicode.org/Public/17.0.0/ucd/)。
 
 ### 5.2 与 Emoji Picker 的关系
 
@@ -270,7 +270,7 @@ emoji-data.txt
 {
   "unicodeVersion": "17.0.0",
   "generatedAt": "2026-08-10T00:00:00Z",
-  "symbolCount": 9473,
+  "symbolCount": 9555,
   "schemaVersion": 1,
   "checksum": "..."
 }
@@ -279,7 +279,7 @@ emoji-data.txt
 构建时必须断言：
 
 ~~~ts
-assert(symbols.length === 9473);
+assert(symbols.length === 9555);
 assert(new Set(symbols.map(x => x.id)).size === symbols.length);
 ~~~
 
@@ -392,7 +392,7 @@ const CACHE_NAME = 'unicode-picker-17.0.0-v1';
 
 ## 11. 搜索方案
 
-9,473 条数据不必一开始引入复杂搜索服务，可以在构建阶段生成标准化搜索字段。
+9,555 条数据不必一开始引入复杂搜索服务，可以在构建阶段生成标准化搜索字段。
 
 ~~~ts
 searchText = [
@@ -568,7 +568,7 @@ unicode-picker:settings
 - Unicode Block 聚合页
 - 热门符号详情页
 
-不必立即为全部字符生成 9,473 个低信息量页面。详情内容完善后再逐步开放索引。
+不必立即为全部字符生成 9,555 个低信息量页面。详情内容完善后再逐步开放索引。
 
 复用现有项目中的：
 
@@ -583,7 +583,7 @@ unicode-picker:settings
 
 ### 17.1 数据测试
 
-- 总数等于 9,473
+- 总数等于 9,555
 - ID 无重复
 - 每项至少有一个码点
 - 码点能还原原始字符
@@ -618,7 +618,7 @@ unicode-picker:settings
 
 - 建立 Astro 项目
 - 编写 Unicode 下载和解析脚本
-- 生成 9,473 条核心符号
+- 生成 9,555 条核心符号
 - 建立产品分类规则
 - 数据校验
 

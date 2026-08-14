@@ -18,7 +18,7 @@
     <text x="32" y="46" font-size="38" fill="#fff" text-anchor="middle">✦</text>
   </g>
   <text x="180" y="120" fill="#e5e7eb" font-size="24" font-weight="600">Unicode 符号选择器</text>
-  <text x="180" y="150" fill="#667085" font-size="16" font-family="SF Mono,Menlo,monospace" letter-spacing="2">UNICODE 17.0 · 9473 SYMBOLS</text>
+  <text x="180" y="150" fill="#667085" font-size="16" font-family="SF Mono,Menlo,monospace" letter-spacing="2">UNICODE 17.0 · 9555 SYMBOLS</text>
 
   <!-- headline -->
   <text x="96" y="290" fill="#f6f7f9" font-size="74" font-weight="700" letter-spacing="-2">搜索 · 复制 · 查码点</text>

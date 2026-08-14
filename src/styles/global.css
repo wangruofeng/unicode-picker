@@ -33,6 +33,15 @@
   unicode-range: U+10D6E, U+10D8E-10D8F, U+10ED0-10ED8, U+10F55-10F59, U+10F86-10F89, U+113D4-113D5, U+113D7-113D8, U+1145A, U+116B9, U+1183B, U+11944-11946, U+119E2, U+11A3F-11A46, U+11A9A-11A9C, U+11A9E-11AA2, U+11B00-11B09, U+11BE1, U+11EF7-11EF8, U+11F43-11F4F, U+12FF1-12FF2, U+16D6D-16D6F, U+16E97-16E9A, U+16FE2, U+1BC9F, U+1CC00-1CCEF, U+1CCFA-1CCFC, U+1CD00-1CEB3, U+1CEBA-1CED0, U+1CEE0-1CEF0, U+1CF50-1CFC3, U+1D000-1D0F5, U+1D100-1D126, U+1D129-1D164, U+1D16A-1D16C, U+1D183-1D184, U+1D18C-1D1A9, U+1D1AE-1D1EA, U+1D200-1D241, U+1D245, U+1E5FF, U+1ECB0, U+1F546-1F548, U+1F8B2-1F8BB, U+1F8C0-1F8C1, U+1F8D0-1F8D8, U+1FAC8, U+1FACD, U+1FAEA, U+1FAEF, U+1FBCB-1FBCF, U+1FBD0-1FBEF, U+1FBFA;
 }
 
+@font-face {
+  font-family: "Unifont Chess Symbols";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../assets/fonts/UnifontChessSymbols-17.0.04.subset.otf") format("opentype");
+  unicode-range: U+1FA54-1FA57;
+}
+
 :root {
   --bg: #f6f7f9;
   --panel: #ffffff;
@@ -53,7 +62,7 @@
   --shadow-hover: 0 8px 20px rgb(37 99 235 / 13%);
   --radius: 10px;
   --mono: "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
-  --symbol-font: "Noto Sans Symbols 2", "Noto Sans SignWriting", "Unifont Symbols", "Unifont Legacy Computing", "Noto Sans Symbols", "Segoe UI Symbol", "Apple Symbols", "Noto Color Emoji", sans-serif;
+  --symbol-font: "Noto Sans Symbols 2", "Noto Sans SignWriting", "Unifont Symbols", "Unifont Legacy Computing", "Unifont Chess Symbols", "Noto Sans Symbols", "Segoe UI Symbol", "Apple Symbols", "Noto Color Emoji", sans-serif;
 }
 
 html.dark {

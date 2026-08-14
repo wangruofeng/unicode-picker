@@ -10,6 +10,7 @@ function codePointQuery(value: string): string | null {
 }
 
 export function scoreSymbol(symbol: CatalogSymbol, query: string): number {
+  const exactQuery = query.trim();
   const normalized = normalizeSearch(query);
   if (!normalized) return 0;
   const codePoint = codePointQuery(normalized);
@@ -20,7 +21,9 @@ export function scoreSymbol(symbol: CatalogSymbol, query: string): number {
     .normalize('NFKC')
     .toLowerCase();
 
-  if (symbol.value === normalized) return 0;
+  // Check the original input first: NFKC folds compatibility characters such
+  // as ① into 1, which would otherwise lose the user's exact character query.
+  if (symbol.value === exactQuery) return 0;
   if (codePoint && symbol.codePoints.some((value) => value.slice(2) === codePoint)) return 1;
   if (lowerName === normalized) return 2;
   if (lowerName.startsWith(normalized) || lowerChineseName.startsWith(normalized)) return 3;
@@ -36,7 +39,7 @@ export function searchSymbols(symbols: CatalogSymbol[], query: string, limit = 2
   const normalized = normalizeSearch(query);
   if (!normalized) return symbols;
   return symbols
-    .map((symbol, index) => ({ symbol, score: scoreSymbol(symbol, normalized), index }))
+    .map((symbol, index) => ({ symbol, score: scoreSymbol(symbol, query), index }))
     .filter(({ score }) => score >= 0)
     .sort((a, b) => a.score - b.score || a.index - b.index)
     .slice(0, limit)
