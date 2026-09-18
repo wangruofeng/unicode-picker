@@ -54,7 +54,7 @@ npm run data:build      # 以上四步的完整流水线
 
 ## 部署
 
-本项目部署在 GitHub Pages，使用 GitHub 提供的默认域名。
+本项目部署在 GitHub Pages，绑定自定义域名 `blog.wangruofeng007.com`（旧 `wangruofeng.github.io` 地址会 301 跳转）。
 
 - 推送到 `main` 分支即触发 `.github/workflows/deploy.yml`，自动构建并部署。
 - 仓库 Settings → Pages → Source 设为 **GitHub Actions**。
